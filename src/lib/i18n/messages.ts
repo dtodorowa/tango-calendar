@@ -52,7 +52,6 @@ export interface Messages {
   moreEvents: (count: number) => string;
   footerNote: string;
   forOrganizers: string;
-  demoNotice: string;
 }
 
 const de: Messages = {
@@ -117,8 +116,7 @@ const de: Messages = {
   eventsOnDay: (day) => `Events am ${day}`,
   moreEvents: (count) => `+${count} weitere`,
   footerNote: 'Ein Community-Kalender für die Tangoszene in der Großregion.',
-  forOrganizers: 'Für Veranstalter',
-  demoNotice: 'Vorschau mit Beispieldaten: Diese Events sind erfunden.'
+  forOrganizers: 'Für Veranstalter'
 };
 
 const en: Messages = {
@@ -183,8 +181,7 @@ const en: Messages = {
   eventsOnDay: (day) => `Events on ${day}`,
   moreEvents: (count) => `+${count} more`,
   footerNote: 'A community calendar for the tango scene in the Greater Region.',
-  forOrganizers: 'For organizers',
-  demoNotice: 'Preview with sample data: these events are made up.'
+  forOrganizers: 'For organizers'
 };
 
 const fr: Messages = {
@@ -249,8 +246,7 @@ const fr: Messages = {
   eventsOnDay: (day) => `Événements du ${day}`,
   moreEvents: (count) => `+${count} autres`,
   footerNote: 'Un calendrier communautaire pour la scène tango de la Grande Région.',
-  forOrganizers: 'Organisateurs',
-  demoNotice: 'Aperçu avec des données d’exemple : ces événements sont inventés.'
+  forOrganizers: 'Organisateurs'
 };
 
 export const messages: Record<Locale, Messages> = { de, en, fr };
