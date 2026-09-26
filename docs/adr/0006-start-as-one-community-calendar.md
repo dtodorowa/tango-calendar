@@ -37,7 +37,7 @@ What waits:
   events".
 - Per-community branding and theming.
 - Category lists other than the tango set (milonga, práctica, workshop, festival,
-  show, café).
+  show, café, hangout).
 
 ## Consequences
 

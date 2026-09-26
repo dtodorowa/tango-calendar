@@ -39,6 +39,7 @@ http://127.0.0.1:54324 to read the 6-digit code.
   owner. Direct inserts into `organizations` are closed.
 - `0003_save_event.sql`: `save_event()`, which writes an event and its
   translations in one transaction under the caller's RLS.
+- `0004_hangout_category.sql`: adds the `hangout` category.
 
 Every write from the app goes through the anon key and RLS. The service-role key
 is not used anywhere in `src/`.

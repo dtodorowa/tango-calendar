@@ -73,7 +73,8 @@ const de: Messages = {
     workshop: 'Workshop',
     festival: 'Festival',
     show: 'Show',
-    cafe: 'Café'
+    cafe: 'Café',
+    hangout: 'Treff'
   },
   categoryLegendOther: 'Sonstiges',
   organizers: 'Veranstalter',
@@ -138,7 +139,8 @@ const en: Messages = {
     workshop: 'Workshop',
     festival: 'Festival',
     show: 'Show',
-    cafe: 'Café'
+    cafe: 'Café',
+    hangout: 'Hangout'
   },
   categoryLegendOther: 'Other',
   organizers: 'Organizers',
@@ -203,7 +205,8 @@ const fr: Messages = {
     workshop: 'Atelier',
     festival: 'Festival',
     show: 'Spectacle',
-    cafe: 'Café'
+    cafe: 'Café',
+    hangout: 'Rencontre'
   },
   categoryLegendOther: 'Autre',
   organizers: 'Organisateurs',

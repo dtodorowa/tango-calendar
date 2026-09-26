@@ -12,7 +12,15 @@ export type Role = 'owner' | 'editor';
 export type EventStatus = 'draft' | 'published';
 export type OverrideStatus = 'cancelled' | 'moved';
 
-export const CATEGORIES = ['milonga', 'practica', 'workshop', 'festival', 'show', 'cafe'] as const;
+export const CATEGORIES = [
+  'milonga',
+  'practica',
+  'workshop',
+  'festival',
+  'show',
+  'cafe',
+  'hangout'
+] as const;
 export type Category = (typeof CATEGORIES)[number];
 
 export const TAGS = ['open-air', 'beginner-friendly', 'live-music', 'with-workshop'] as const;

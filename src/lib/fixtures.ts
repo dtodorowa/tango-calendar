@@ -355,6 +355,30 @@ export const events: EventSeries[] = [
     note: { de: 'Kuchen inklusive', en: 'Cake included', fr: 'Gâteau offert' }
   },
   {
+    id: 'hangout-homburg',
+    orgId: 'org-homburg',
+    venueId: 'venue-homburg',
+    categories: ['hangout'],
+    tags: ['beginner-friendly'],
+    status: 'published',
+    rrule: 'FREQ=MONTHLY;BYDAY=1WE',
+    dtstartLocal: '2026-01-07T19:00',
+    timezone: TZ,
+    durationMinutes: 120,
+    price: { kind: 'free', amount: null },
+    sourceLang: 'de',
+    title: {
+      de: 'Tango-Treff: Quatschen & Kennenlernen',
+      en: 'Tango hangout: chat & meet people',
+      fr: 'Rencontre tango : papoter et faire connaissance'
+    },
+    description: {
+      de: 'Kein Unterricht, keine Milonga. Einfach vorbeikommen, was trinken und die Leute kennenlernen. Neue Gesichter sind besonders willkommen.',
+      en: 'No class, no milonga. Just drop by, grab a drink and get to know people. New faces especially welcome.',
+      fr: 'Pas de cours, pas de milonga. Passe simplement boire un verre et rencontrer du monde. Les nouveaux visages sont les bienvenus.'
+    }
+  },
+  {
     id: 'milonga-homburg',
     orgId: 'org-homburg',
     venueId: 'venue-homburg',

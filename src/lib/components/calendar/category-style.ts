@@ -6,6 +6,7 @@ import Drama from '@lucide/svelte/icons/drama';
 import Footprints from '@lucide/svelte/icons/footprints';
 import GraduationCap from '@lucide/svelte/icons/graduation-cap';
 import Music from '@lucide/svelte/icons/music';
+import PartyPopper from '@lucide/svelte/icons/party-popper';
 import Sparkles from '@lucide/svelte/icons/sparkles';
 import type { Category } from '$lib/types';
 
@@ -59,6 +60,13 @@ export const CATEGORY_STYLE: Record<Category, CategoryStyle> = {
     dot: 'bg-cat-cafe-strong',
     ring: 'ring-cat-cafe-strong',
     icon: Coffee
+  },
+  hangout: {
+    surface: 'bg-cat-hangout',
+    text: 'text-cat-hangout-strong',
+    dot: 'bg-cat-hangout-strong',
+    ring: 'ring-cat-hangout-strong',
+    icon: PartyPopper
   }
 };
 
