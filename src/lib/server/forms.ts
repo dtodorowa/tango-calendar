@@ -18,8 +18,7 @@ export type OrganizerFormResult =
   | { ok: true; input: OrganizerInput; values: OrganizerValues }
   | { ok: false; values: OrganizerValues; errors: FieldErrors; formError?: ErrorCode };
 
-export async function readOrganizerForm(request: Request): Promise<OrganizerFormResult> {
-  const form = await request.formData();
+export function readOrganizerForm(form: FormData): OrganizerFormResult {
   const values = {
     name: String(form.get('name') ?? ''),
     email: String(form.get('email') ?? ''),

@@ -1,22 +1,37 @@
 <script lang="ts">
-  import type { Category } from '$lib/types';
+  import type { EventPhotoVariant } from '$lib/media';
+  import type { Category, Photo } from '$lib/types';
   import { cn } from '$lib/utils';
   import { primaryStyle } from './category-style';
 
   type Props = {
     categories: Category[];
-    photo: string | null;
+    photo: Photo | null;
+    /** `full` for the hero on the event page; lists and cards use the small file. */
+    variant?: EventPhotoVariant;
     alt?: string;
     class?: string;
     iconSize?: number;
   };
-  let { categories, photo, alt = '', class: className, iconSize = 28 }: Props = $props();
+  let {
+    categories,
+    photo,
+    variant = 'card',
+    alt = '',
+    class: className,
+    iconSize = 28
+  }: Props = $props();
 
   const style = $derived(primaryStyle(categories));
 </script>
 
 {#if photo}
-  <img src={photo} {alt} loading="lazy" class={cn('object-cover', className)} />
+  <img
+    src={photo[variant]}
+    {alt}
+    loading={variant === 'full' ? 'eager' : 'lazy'}
+    class={cn('object-cover', className)}
+  />
 {:else}
   <!-- Most organizers won't upload a photo; a category tile keeps rows balanced. -->
   <div

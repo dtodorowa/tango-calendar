@@ -6,7 +6,8 @@ import { LOCALES } from '$lib/types';
 import { eventSchema, toFieldErrors, type EventInput, type FieldErrors } from '$lib/validation';
 import { requireOrganizer } from './auth';
 import { geocode } from './geocode';
-import { createVenue, getEditableEvent, listVenues, saveEvent } from './organizer';
+import { finishImageChange, prepareImage, readImageChange } from './media';
+import { createVenue, getEditableEvent, listVenues, saveEvent, setEventPhoto } from './organizer';
 
 export interface EventFormFailure {
   values: EventFormValues;
@@ -32,7 +33,8 @@ function translationsOf(input: EventInput) {
 
 export async function saveEventAction(event: RequestEvent, eventId: string | null) {
   const { client, orgIds } = await requireOrganizer(event.locals, event.url);
-  const values = readEventForm(await event.request.formData());
+  const form = await event.request.formData();
+  const values = readEventForm(form);
 
   const parsed = eventSchema.safeParse(values);
   if (!parsed.success) return failure(400, values, toFieldErrors(parsed.error));
@@ -40,10 +42,13 @@ export async function saveEventAction(event: RequestEvent, eventId: string | nul
   if (!orgIds.includes(input.orgId)) return failure(403, values, {}, 'generic');
 
   let existingRrule: string | null = null;
+  let previousPhoto: string | null = null;
   if (eventId) {
     const existing = await getEditableEvent(client, eventId, orgIds);
     if (!existing) return failure(404, values, {}, 'generic');
     existingRrule = existing.entry.series.rrule;
+    // Moving the event to another org would strand the photo in the old org's folder.
+    if (existing.entry.series.orgId === input.orgId) previousPhoto = existing.heroPhotoKey;
   }
 
   const scheduled = buildSchedule(input, existingRrule);
@@ -73,6 +78,9 @@ export async function saveEventAction(event: RequestEvent, eventId: string | nul
     }
   }
 
+  const photo = await prepareImage(client, input.orgId, 'events', readImageChange(form, 'photo'));
+  if ('error' in photo) return failure(400, values, { photo: photo.error });
+
   let savedId: string;
   try {
     savedId = await saveEvent(client, eventId, {
@@ -90,7 +98,18 @@ export async function saveEventAction(event: RequestEvent, eventId: string | nul
       translations: translationsOf(input)
     });
   } catch {
+    await finishImageChange(client, 'events', photo, null, false);
     return failure(500, values, {}, 'generic');
+  }
+
+  if (photo.key !== undefined) {
+    try {
+      await setEventPhoto(client, savedId, photo.key);
+      await finishImageChange(client, 'events', photo, previousPhoto, true);
+    } catch {
+      await finishImageChange(client, 'events', photo, null, false);
+      redirect(303, `/dashboard/events/${savedId}?saved=1&photoFailed=1`);
+    }
   }
 
   redirect(303, `/dashboard/events/${savedId}?saved=1`);

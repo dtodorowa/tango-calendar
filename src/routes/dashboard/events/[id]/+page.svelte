@@ -43,7 +43,11 @@
 
 <h1 class="font-display text-step3">{d.form.editTitle}</h1>
 
-{#if data.saved && !failedSave}
+{#if data.photoFailed && !failedSave}
+  <p class="rounded-lg bg-destructive/10 px-4 py-3 text-sm text-destructive" role="alert">
+    {d.media.photoFailed}
+  </p>
+{:else if data.saved && !failedSave}
   <p class="rounded-lg bg-cat-workshop px-4 py-3 text-sm text-cat-workshop-strong" role="status">
     {d.form.saved}
   </p>
@@ -87,6 +91,7 @@
     formError={failedSave?.formError}
     {organizations}
     venues={data.venues}
+    photo={data.photo}
   />
 {/key}
 

@@ -3,6 +3,7 @@ import type { Actions, PageServerLoad } from './$types';
 import { expandSeries } from '$lib/recurrence';
 import { requireOrganizer } from '$lib/server/auth';
 import { saveEventAction } from '$lib/server/event-actions';
+import { removeImage } from '$lib/server/media';
 import {
   cancelOccurrence,
   deleteEvent,
@@ -47,9 +48,11 @@ export const load: PageServerLoad = async ({ locals, params, parent, url, depend
     eventId: series.id,
     status: series.status,
     values: editable.values,
+    photo: series.heroPhoto ?? null,
     venues,
     dates,
-    saved: url.searchParams.has('saved')
+    saved: url.searchParams.has('saved'),
+    photoFailed: url.searchParams.has('photoFailed')
   };
 };
 
@@ -73,8 +76,10 @@ export const actions: Actions = {
 
   delete: async ({ locals, params, url }) => {
     const { client, orgIds } = await requireOrganizer(locals, url);
-    if (!(await getEditableEvent(client, params.id, orgIds))) error(404, 'Event not found');
+    const existing = await getEditableEvent(client, params.id, orgIds);
+    if (!existing) error(404, 'Event not found');
     await deleteEvent(client, params.id);
+    await removeImage(client, existing.heroPhotoKey, 'events');
     redirect(303, '/dashboard');
   }
 };

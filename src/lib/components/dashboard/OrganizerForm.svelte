@@ -6,6 +6,7 @@
   import type { ErrorCode } from '$lib/i18n/dashboard';
   import type { FieldErrors } from '$lib/validation';
   import FormField from './FormField.svelte';
+  import PhotoField from './PhotoField.svelte';
   import SocialLinksField from './SocialLinksField.svelte';
 
   type Values = {
@@ -21,8 +22,10 @@
     errors?: FieldErrors;
     formError?: ErrorCode;
     submitLabel: string;
+    /** URL of the stored logo; null on the create form. */
+    logo?: string | null;
   };
-  let { action, values, errors = {}, formError, submitLabel }: Props = $props();
+  let { action, values, errors = {}, formError, submitLabel, logo = null }: Props = $props();
 
   const i18n = getI18n();
   const d = $derived(i18n.d);
@@ -31,6 +34,7 @@
 
 <form
   method="POST"
+  enctype="multipart/form-data"
   {action}
   use:enhance={() => {
     pending = true;
@@ -55,6 +59,15 @@
       />
     {/snippet}
   </FormField>
+
+  <PhotoField
+    name="logo"
+    label={d.media.logo}
+    hint={d.media.logoHint}
+    current={logo}
+    shape="round"
+    error={errors.logo}
+  />
 
   <p class="text-sm text-muted-foreground">{d.organizer.publicHint}</p>
 

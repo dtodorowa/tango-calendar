@@ -4,12 +4,13 @@
   import type { EventFormValues } from '$lib/event-form';
   import { getI18n } from '$lib/i18n/context';
   import type { ErrorCode } from '$lib/i18n/dashboard';
-  import type { Organization, Venue } from '$lib/types';
+  import type { Organization, Photo, Venue } from '$lib/types';
   import type { FieldErrors } from '$lib/validation';
   import EventPriceFields from './EventPriceFields.svelte';
   import EventScheduleFields from './EventScheduleFields.svelte';
   import EventTextFields from './EventTextFields.svelte';
   import EventVenueFields from './EventVenueFields.svelte';
+  import PhotoField from './PhotoField.svelte';
 
   type Props = {
     action: string;
@@ -18,8 +19,18 @@
     formError?: ErrorCode;
     organizations: Organization[];
     venues: Venue[];
+    /** The stored photo; null for a new event. */
+    photo?: Photo | null;
   };
-  let { action, values, errors = {}, formError, organizations, venues }: Props = $props();
+  let {
+    action,
+    values,
+    errors = {},
+    formError,
+    organizations,
+    venues,
+    photo = null
+  }: Props = $props();
 
   const i18n = getI18n();
   const d = $derived(i18n.d);
@@ -32,6 +43,7 @@
 
 <form
   method="POST"
+  enctype="multipart/form-data"
   {action}
   novalidate
   use:enhance={() => {
@@ -57,6 +69,16 @@
   {/if}
 
   <EventTextFields {values} {errors} />
+  <section class="surface p-5">
+    <PhotoField
+      name="photo"
+      label={d.media.eventPhoto}
+      hint={d.media.eventPhotoHint}
+      current={photo?.card ?? null}
+      shape="wide"
+      error={errors.photo}
+    />
+  </section>
   <EventScheduleFields {values} {errors} />
   {#key orgId}
     <EventVenueFields {values} {errors} venues={orgVenues} />

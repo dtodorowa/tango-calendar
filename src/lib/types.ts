@@ -1,5 +1,9 @@
 // Domain types shared across server, API, and UI. See CONTEXT.md for meanings.
 
+import type { Photo } from './media';
+
+export type { Photo };
+
 export type Locale = 'de' | 'en' | 'fr';
 export const LOCALES: Locale[] = ['de', 'en', 'fr'];
 export const DEFAULT_LOCALE: Locale = 'de';
@@ -50,6 +54,8 @@ export interface Organization {
   website?: string | null;
   /** Profile URLs (Instagram, Facebook, ...); the platform is inferred from the host. */
   socialLinks?: string[];
+  /** Public URL of the square logo. */
+  logo?: string | null;
 }
 
 export interface Venue {
@@ -86,7 +92,7 @@ export interface EventSeries {
   description: Localized;
   /** Short highlight shown as a chip, e.g. "Rain alert via WhatsApp". */
   note?: Localized | null;
-  heroPhoto?: string | null;
+  heroPhoto?: Photo | null;
 }
 
 export interface OccurrenceOverride {
@@ -113,5 +119,5 @@ export interface Occurrence {
   title: Localized;
   description: Localized;
   note: Localized | null;
-  heroPhoto: string | null;
+  heroPhoto: Photo | null;
 }

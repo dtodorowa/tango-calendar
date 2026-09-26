@@ -2,6 +2,7 @@
 // a database. Column shapes follow supabase/migrations/0002_tango_calendar.sql.
 
 import type { Tables } from '$lib/database.types';
+import { logoUrl, photoUrls } from '$lib/media';
 import {
   CATEGORIES,
   LOCALES,
@@ -21,7 +22,7 @@ import type { SeriesWithContext } from './source';
 
 export type OrganizationRow = Pick<
   Tables<'organizations'>,
-  'id' | 'name' | 'slug' | 'email' | 'phone' | 'website' | 'social_links'
+  'id' | 'name' | 'slug' | 'email' | 'phone' | 'website' | 'social_links' | 'logo'
 >;
 export type VenueRow = Pick<
   Tables<'venues'>,
@@ -59,13 +60,14 @@ export type EventRow = Pick<
 export const EVENT_SELECT = `
   id, org_id, venue_id, categories, tags, status, rrule, dtstart_local, timezone,
   duration_minutes, price_kind, price_amount, source_lang, hero_photo,
-  organizations ( id, name, slug, email, phone, website, social_links ),
+  organizations ( id, name, slug, email, phone, website, social_links, logo ),
   venues ( id, org_id, name, address, lat, lng, city, country ),
   event_i18n ( locale, title, description, note ),
   occurrence_overrides ( occ_date, status, override_start_local )
 `;
 
-export function toOrganization(row: OrganizationRow): Organization {
+/** `storageBase` is the Supabase project URL that media keys resolve against. */
+export function toOrganization(row: OrganizationRow, storageBase: string): Organization {
   return {
     id: row.id,
     name: row.name,
@@ -73,7 +75,8 @@ export function toOrganization(row: OrganizationRow): Organization {
     email: row.email,
     phone: row.phone,
     website: row.website,
-    socialLinks: row.social_links
+    socialLinks: row.social_links,
+    logo: logoUrl(storageBase, row.logo)
   };
 }
 
@@ -111,7 +114,7 @@ function knownValues<T extends string>(values: string[], allowed: readonly T[]):
   return values.filter((value): value is T => (allowed as readonly string[]).includes(value));
 }
 
-export function toSeriesWithContext(row: EventRow): SeriesWithContext | null {
+export function toSeriesWithContext(row: EventRow, storageBase: string): SeriesWithContext | null {
   if (!row.organizations || !row.venues) return null;
   const sourceLang: Locale = isLocale(row.source_lang) ? row.source_lang : 'de';
   const note = localize(row.event_i18n, 'note', sourceLang);
@@ -135,7 +138,7 @@ export function toSeriesWithContext(row: EventRow): SeriesWithContext | null {
     title: localize(row.event_i18n, 'title', sourceLang),
     description: localize(row.event_i18n, 'description', sourceLang),
     note: note[sourceLang] ? note : null,
-    heroPhoto: row.hero_photo
+    heroPhoto: photoUrls(storageBase, row.hero_photo)
   };
 
   const overrides: OccurrenceOverride[] = row.occurrence_overrides.map((override) => ({
@@ -149,7 +152,7 @@ export function toSeriesWithContext(row: EventRow): SeriesWithContext | null {
 
   return {
     series,
-    org: toOrganization(row.organizations),
+    org: toOrganization(row.organizations, storageBase),
     venue: toVenue(row.venues),
     overrides
   };

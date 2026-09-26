@@ -12,7 +12,7 @@
   import EventsMap from '$lib/components/calendar/EventsMap.svelte';
   import PriceTag from '$lib/components/calendar/PriceTag.svelte';
   import { primaryStyle } from '$lib/components/calendar/category-style';
-  import { eventHref, osmHref, websiteLabel } from '$lib/components/calendar/links';
+  import { eventHref, googleMapsHref, websiteLabel } from '$lib/components/calendar/links';
   import AppHeader from '$lib/components/layout/AppHeader.svelte';
   import SocialLinks from '$lib/components/social/SocialLinks.svelte';
   import { Button } from '$lib/components/ui/button';
@@ -42,6 +42,7 @@
           '@type': 'Event',
           name: title,
           description: description || undefined,
+          image: event.heroPhoto?.full,
           startDate: data.selected.start,
           endDate: data.selected.end,
           eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
@@ -56,6 +57,7 @@
             '@type': 'Organization',
             name: org.name,
             url: org.website ?? undefined,
+            logo: org.logo ?? undefined,
             sameAs: org.socialLinks?.length ? org.socialLinks : undefined
           },
           offers:
@@ -74,6 +76,9 @@
   <meta property="og:title" content={title} />
   <meta property="og:type" content="event" />
   <meta property="og:url" content={canonical} />
+  {#if event.heroPhoto}
+    <meta property="og:image" content={event.heroPhoto.full} />
+  {/if}
   {#if jsonLd}
     <!-- eslint-disable-next-line svelte/no-at-html-tags -->
     {@html `<script type="application/ld+json">${jsonLd}</script>`}
@@ -96,6 +101,7 @@
       <EventThumb
         categories={event.categories}
         photo={event.heroPhoto}
+        variant="full"
         alt={title}
         iconSize={56}
         class="aspect-[2/1] w-full rounded-2xl"
@@ -159,13 +165,18 @@
         <h2 class="text-xs font-semibold tracking-wide text-muted-foreground uppercase">
           {i18n.t.venue}
         </h2>
-        <p class="flex items-start gap-2 text-sm">
+        <a
+          href={googleMapsHref(venue)}
+          target="_blank"
+          rel="noopener"
+          class="group flex items-start gap-2 text-sm"
+        >
           <MapPin size={16} class="mt-0.5 shrink-0 text-muted-foreground" />
           <span>
-            <span class="font-medium">{venue.name}</span><br />
-            {venue.address}
+            <span class="font-medium group-hover:text-primary">{venue.name}</span><br />
+            <span class="group-hover:underline">{venue.address}</span>
           </span>
-        </p>
+        </a>
         <div class="h-44 overflow-hidden rounded-lg border">
           <EventsMap
             markers={[
@@ -182,7 +193,7 @@
           />
         </div>
         <a
-          href={osmHref(venue.lat, venue.lng)}
+          href={googleMapsHref(venue)}
           target="_blank"
           rel="noopener"
           class="flex items-center gap-1.5 text-sm text-primary hover:underline"
@@ -196,7 +207,12 @@
         <h2 class="text-xs font-semibold tracking-wide text-muted-foreground uppercase">
           {i18n.t.organizer}
         </h2>
-        <p class="font-medium">{org.name}</p>
+        <p class="flex items-center gap-2.5 font-medium">
+          {#if org.logo}
+            <img src={org.logo} alt="" class="size-10 shrink-0 rounded-full border object-cover" />
+          {/if}
+          {org.name}
+        </p>
         {#if org.phone}
           <a
             href="tel:{org.phone.replace(/\s/g, '')}"

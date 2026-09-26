@@ -2,7 +2,8 @@ import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { requireOrganizer } from '$lib/server/auth';
 import { readOrganizerForm } from '$lib/server/forms';
-import { createOrganization, listOrganizerEvents } from '$lib/server/organizer';
+import { finishImageChange, prepareImage, readImageChange } from '$lib/server/media';
+import { createOrganization, listOrganizerEvents, updateOrganization } from '$lib/server/organizer';
 
 export const load: PageServerLoad = async ({ locals, parent }) => {
   const { configured, memberships } = await parent();
@@ -27,10 +28,12 @@ export const load: PageServerLoad = async ({ locals, parent }) => {
 export const actions: Actions = {
   createOrganizer: async ({ request, locals, url }) => {
     const { client } = await requireOrganizer(locals, url);
-    const result = await readOrganizerForm(request);
+    const form = await request.formData();
+    const result = readOrganizerForm(form);
     if (!result.ok) return fail(400, result);
+    let organizationId: string;
     try {
-      await createOrganization(client, result.input);
+      organizationId = (await createOrganization(client, result.input)).id;
     } catch {
       return fail(500, {
         ok: false as const,
@@ -38,6 +41,16 @@ export const actions: Actions = {
         errors: {},
         formError: 'generic' as const
       });
+    }
+    // The logo's folder is the org id, so it can only be stored once the org exists.
+    // A failed logo doesn't undo the signup; it can be added from the profile page.
+    const logo = await prepareImage(client, organizationId, 'logo', readImageChange(form, 'logo'));
+    if (!('error' in logo) && logo.key) {
+      try {
+        await updateOrganization(client, organizationId, null, logo.key);
+      } catch {
+        await finishImageChange(client, 'logo', logo, null, false);
+      }
     }
     redirect(303, '/dashboard/events/new');
   }

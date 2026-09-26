@@ -7,6 +7,8 @@ export const ERROR_CODES = [
   'required',
   'tooLong',
   'tooMany',
+  'invalidImage',
+  'imageTooLarge',
   'invalidEmail',
   'invalidUrl',
   'invalidCode',
@@ -62,6 +64,17 @@ export interface DashboardMessages {
     create: string;
     save: string;
     edit: string;
+  };
+  media: {
+    eventPhoto: string;
+    eventPhotoHint: string;
+    logo: string;
+    logoHint: string;
+    choose: string;
+    replace: string;
+    remove: string;
+    preparing: string;
+    photoFailed: string;
   };
   events: {
     title: string;
@@ -156,6 +169,8 @@ const de: DashboardMessages = {
     required: 'Bitte ausfüllen.',
     tooLong: 'Das ist zu lang.',
     tooMany: 'Das sind zu viele.',
+    invalidImage: 'Das Bild konnte nicht gelesen werden. Bitte ein JPG, PNG oder WebP wählen.',
+    imageTooLarge: 'Das Bild ist zu groß. Bitte ein kleineres wählen.',
     invalidEmail: 'Das sieht nicht nach einer E-Mail-Adresse aus.',
     invalidUrl: 'Bitte mit https:// beginnen.',
     invalidCode: 'Der Code stimmt nicht oder ist abgelaufen.',
@@ -191,6 +206,18 @@ const de: DashboardMessages = {
     create: 'Profil anlegen',
     save: 'Speichern',
     edit: 'Profil bearbeiten'
+  },
+  media: {
+    eventPhoto: 'Foto',
+    eventPhotoHint:
+      'Optional. Ein Querformat wirkt am besten. Wir speichern es als WebP und entfernen Standortdaten.',
+    logo: 'Logo',
+    logoHint: 'Optional. Wird rund angezeigt, also am besten quadratisch.',
+    choose: 'Bild auswählen',
+    replace: 'Bild ersetzen',
+    remove: 'Entfernen',
+    preparing: 'Bild wird vorbereitet…',
+    photoFailed: 'Das Event ist gespeichert, aber das Foto nicht. Bitte noch einmal hochladen.'
   },
   events: {
     title: 'Deine Events',
@@ -287,6 +314,8 @@ const en: DashboardMessages = {
     required: 'Please fill this in.',
     tooLong: 'That is too long.',
     tooMany: 'That is too many.',
+    invalidImage: 'That image could not be read. Please pick a JPG, PNG or WebP.',
+    imageTooLarge: 'That image is too large. Please pick a smaller one.',
     invalidEmail: 'That does not look like an email address.',
     invalidUrl: 'Please start with https://.',
     invalidCode: 'The code is wrong or has expired.',
@@ -321,6 +350,17 @@ const en: DashboardMessages = {
     create: 'Create profile',
     save: 'Save',
     edit: 'Edit profile'
+  },
+  media: {
+    eventPhoto: 'Photo',
+    eventPhotoHint: 'Optional. Landscape works best. We save it as WebP and strip location data.',
+    logo: 'Logo',
+    logoHint: 'Optional. Shown in a circle, so square works best.',
+    choose: 'Choose image',
+    replace: 'Replace image',
+    remove: 'Remove',
+    preparing: 'Preparing image…',
+    photoFailed: 'The event is saved, but the photo is not. Please upload it again.'
   },
   events: {
     title: 'Your events',
@@ -417,6 +457,8 @@ const fr: DashboardMessages = {
     required: 'Merci de remplir ce champ.',
     tooLong: 'C’est trop long.',
     tooMany: 'C’est trop.',
+    invalidImage: 'Impossible de lire cette image. Merci de choisir un JPG, PNG ou WebP.',
+    imageTooLarge: 'Cette image est trop lourde. Merci d’en choisir une plus petite.',
     invalidEmail: 'Cela ne ressemble pas à une adresse e-mail.',
     invalidUrl: 'Merci de commencer par https://.',
     invalidCode: 'Le code est faux ou a expiré.',
@@ -452,6 +494,18 @@ const fr: DashboardMessages = {
     create: 'Créer le profil',
     save: 'Enregistrer',
     edit: 'Modifier le profil'
+  },
+  media: {
+    eventPhoto: 'Photo',
+    eventPhotoHint:
+      'Facultatif. Le format paysage rend le mieux. Enregistrée en WebP, sans données de localisation.',
+    logo: 'Logo',
+    logoHint: 'Facultatif. Affiché dans un cercle, donc idéalement carré.',
+    choose: 'Choisir une image',
+    replace: 'Remplacer l’image',
+    remove: 'Retirer',
+    preparing: 'Préparation de l’image…',
+    photoFailed: 'L’événement est enregistré, mais pas la photo. Merci de la téléverser à nouveau.'
   },
   events: {
     title: 'Tes événements',

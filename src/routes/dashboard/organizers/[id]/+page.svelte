@@ -37,4 +37,5 @@
   errors={failed?.errors}
   formError={failed?.formError}
   submitLabel={d.organizer.save}
+  logo={organization.logo ?? null}
 />

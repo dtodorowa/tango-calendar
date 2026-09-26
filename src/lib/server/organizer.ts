@@ -16,6 +16,7 @@ import {
   type EventRow
 } from './data/rows';
 import type { SeriesWithContext } from './data/source';
+import { supabaseUrl } from './env';
 import type { AppSupabaseClient } from './supabase';
 
 const UNIQUE_VIOLATION = '23505';
@@ -31,13 +32,13 @@ export async function listMemberships(
 ): Promise<Membership[]> {
   const { data, error } = await client
     .from('memberships')
-    .select('role, organizations ( id, name, slug, email, phone, website, social_links )')
+    .select('role, organizations ( id, name, slug, email, phone, website, social_links, logo )')
     .eq('user_id', userId);
   if (error) throw error;
   return data
     .filter((row) => row.organizations)
     .map((row): Membership => ({
-      organization: toOrganization(row.organizations!),
+      organization: toOrganization(row.organizations!, supabaseUrl),
       role: row.role === 'owner' ? 'owner' : 'editor'
     }))
     .sort((a, b) => a.organization.name.localeCompare(b.organization.name));
@@ -59,27 +60,48 @@ export async function createOrganization(
       p_website: input.website ?? undefined,
       p_social_links: input.socialLinks
     });
-    if (!error) return toOrganization(data);
+    if (!error) return toOrganization(data, supabaseUrl);
     if (error.code !== UNIQUE_VIOLATION) throw error;
   }
   throw new Error('Could not find a free organizer slug');
 }
 
+/** `logo` undefined leaves the stored logo as it is. */
 export async function updateOrganization(
   client: AppSupabaseClient,
   id: string,
-  input: OrganizerInput
+  input: OrganizerInput | null,
+  logo?: string | null
 ): Promise<void> {
   const { error } = await client
     .from('organizations')
     .update({
-      name: input.name,
-      email: input.email,
-      phone: input.phone,
-      website: input.website,
-      social_links: input.socialLinks
+      ...(input && {
+        name: input.name,
+        email: input.email,
+        phone: input.phone,
+        website: input.website,
+        social_links: input.socialLinks
+      }),
+      ...(logo !== undefined && { logo })
     })
     .eq('id', id);
+  if (error) throw error;
+}
+
+/** The raw storage key (not the URL), for cleaning up a replaced logo. */
+export async function getLogoKey(client: AppSupabaseClient, id: string): Promise<string | null> {
+  const { data, error } = await client.from('organizations').select('logo').eq('id', id).single();
+  if (error) throw error;
+  return data.logo;
+}
+
+export async function setEventPhoto(
+  client: AppSupabaseClient,
+  id: string,
+  key: string | null
+): Promise<void> {
+  const { error } = await client.from('events').update({ hero_photo: key }).eq('id', id);
   if (error) throw error;
 }
 
@@ -134,7 +156,7 @@ export async function listOrganizerEvents(
     .returns<EventRow[]>();
   if (error) throw error;
   return data.flatMap((row) => {
-    const entry = toSeriesWithContext(row);
+    const entry = toSeriesWithContext(row, supabaseUrl);
     return entry ? [{ entry, status: entry.series.status }] : [];
   });
 }
@@ -142,6 +164,8 @@ export async function listOrganizerEvents(
 export interface EditableEvent {
   entry: SeriesWithContext;
   values: EventFormValues;
+  /** Storage key behind `entry.series.heroPhoto`. */
+  heroPhotoKey: string | null;
 }
 
 /** One event as form values, with raw per-locale texts (no fallbacks filled in). */
@@ -159,7 +183,7 @@ export async function getEditableEvent(
     .maybeSingle();
   if (error) throw error;
   if (!data) return null;
-  const entry = toSeriesWithContext(data);
+  const entry = toSeriesWithContext(data, supabaseUrl);
   if (!entry) return null;
 
   const raw = new Map(data.event_i18n.map((row) => [row.locale, row]));
@@ -176,6 +200,7 @@ export async function getEditableEvent(
   const sourceLang: Locale = isLocale(data.source_lang) ? data.source_lang : 'de';
   return {
     entry,
+    heroPhotoKey: data.hero_photo,
     values: {
       orgId: data.org_id,
       sourceLang,

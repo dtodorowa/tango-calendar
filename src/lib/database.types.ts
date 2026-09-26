@@ -217,6 +217,7 @@ export type Database = {
           created_at: string;
           email: string | null;
           id: string;
+          logo: string | null;
           name: string;
           phone: string | null;
           slug: string;
@@ -227,6 +228,7 @@ export type Database = {
           created_at?: string;
           email?: string | null;
           id?: string;
+          logo?: string | null;
           name: string;
           phone?: string | null;
           slug: string;
@@ -237,6 +239,7 @@ export type Database = {
           created_at?: string;
           email?: string | null;
           id?: string;
+          logo?: string | null;
           name?: string;
           phone?: string | null;
           slug?: string;
@@ -295,6 +298,7 @@ export type Database = {
     };
     Functions: {
       are_http_urls: { Args: { urls: string[] }; Returns: boolean };
+      can_write_media: { Args: { object_name: string }; Returns: boolean };
       create_organization: {
         Args: {
           p_email?: string;
@@ -308,6 +312,7 @@ export type Database = {
           created_at: string;
           email: string | null;
           id: string;
+          logo: string | null;
           name: string;
           phone: string | null;
           slug: string;
