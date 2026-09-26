@@ -44,7 +44,7 @@
           in:fade={{ duration: 150 }}
         >
           <h2
-            class="sticky top-0 z-20 -mx-4 bg-background/95 px-4 py-1.5 text-sm font-semibold backdrop-blur md:sr-only"
+            class="sticky top-16 z-20 -mx-4 bg-background/95 px-4 py-1.5 text-sm font-semibold backdrop-blur md:sr-only"
           >
             {formatLongDate(key, i18n.locale)}
           </h2>

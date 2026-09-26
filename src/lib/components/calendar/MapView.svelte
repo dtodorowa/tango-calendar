@@ -59,7 +59,7 @@
 </script>
 
 <div
-  class="grid h-[calc(100dvh-15.5rem)] min-h-[26rem] gap-3 lg:h-[calc(100dvh-10rem)] lg:min-h-[32rem] lg:grid-cols-[22rem_minmax(0,1fr)]"
+  class="grid h-[calc(100dvh-15.5rem)] min-h-[26rem] gap-3 lg:h-auto lg:min-h-[32rem] lg:flex-1 lg:grid-cols-[22rem_minmax(0,1fr)]"
 >
   <div class="hidden min-h-0 flex-col gap-2 lg:flex">
     <p class="text-sm text-muted-foreground">{i18n.t.eventCount(occurrences.length)}</p>

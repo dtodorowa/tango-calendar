@@ -16,7 +16,7 @@
   const i18n = getI18n();
 </script>
 
-<header class="border-b bg-card/70 backdrop-blur">
+<header class="sticky top-0 z-30 shrink-0 border-b bg-card/70 backdrop-blur">
   <div class="mx-auto flex h-16 max-w-[100rem] items-center gap-3 px-4 lg:gap-4 lg:px-6">
     <a href="/" class="flex min-w-0 shrink-0 items-center gap-2.5 lg:w-64">
       <span class="flex flex-col leading-none">
