@@ -4,7 +4,6 @@
   import { getI18n } from '$lib/i18n/context';
   import { SITE } from '$lib/site';
   import LanguageSwitcher from './LanguageSwitcher.svelte';
-  import Logo from './Logo.svelte';
 
   type Props = {
     /** Centre slot on desktop (the search field on the calendar page). */
@@ -20,7 +19,6 @@
 <header class="border-b bg-card/70 backdrop-blur">
   <div class="mx-auto flex h-16 max-w-[100rem] items-center gap-3 px-4 lg:gap-4 lg:px-6">
     <a href="/" class="flex min-w-0 shrink-0 items-center gap-2.5 lg:w-64">
-      <Logo class="shrink-0 text-primary" />
       <span class="flex flex-col leading-none">
         <span class="text-[0.6875rem] font-semibold tracking-widest text-primary uppercase">
           {SITE.regionMark}
