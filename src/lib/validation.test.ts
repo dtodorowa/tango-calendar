@@ -70,19 +70,37 @@ describe('eventSchema', () => {
 describe('organizerSchema', () => {
   it('turns empty optionals into null and checks formats', () => {
     expect(
-      organizerSchema.parse({ name: 'Tango Saar', email: '', phone: '', website: '' })
-    ).toEqual({ name: 'Tango Saar', email: null, phone: null, website: null });
+      organizerSchema.parse({
+        name: 'Tango Saar',
+        email: '',
+        phone: '',
+        website: '',
+        socialLinks: ['', ' ']
+      })
+    ).toEqual({ name: 'Tango Saar', email: null, phone: null, website: null, socialLinks: [] });
     const result = organizerSchema.safeParse({
       name: '',
       email: 'nope',
       phone: '',
-      website: 'tango.de'
+      website: 'tango.de',
+      socialLinks: ['https://instagram.com/tangosaar', 'instagram.com/tangosaar']
     });
     expect(toFieldErrors(result.error!)).toEqual({
       name: 'required',
       email: 'invalidEmail',
-      website: 'invalidUrl'
+      website: 'invalidUrl',
+      'socialLinks.1': 'invalidUrl'
     });
+  });
+
+  it('keeps filled social links and caps how many', () => {
+    const base = { name: 'Tango Saar', email: '', phone: '', website: '' };
+    expect(
+      organizerSchema.parse({ ...base, socialLinks: ['', 'https://t.me/tangosaar'] }).socialLinks
+    ).toEqual(['https://t.me/tangosaar']);
+    const tooMany = Array.from({ length: 7 }, (_, index) => `https://example.org/${index}`);
+    const result = organizerSchema.safeParse({ ...base, socialLinks: tooMany });
+    expect(toFieldErrors(result.error!)).toEqual({ socialLinks: 'tooMany' });
   });
 });
 

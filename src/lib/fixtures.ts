@@ -13,7 +13,8 @@ export const organizations: Organization[] = [
     name: 'Tango Saar',
     slug: 'tango-saar',
     email: 'hallo@tango-saar.example.org',
-    website: 'https://tango-saar.example.org'
+    website: 'https://tango-saar.example.org',
+    socialLinks: ['https://www.instagram.com/tangosaar.example']
   },
   {
     id: 'org-tango-lux',
@@ -41,7 +42,13 @@ export const organizations: Organization[] = [
     id: 'org-forbach',
     name: 'Tango Frontière',
     slug: 'tango-frontiere',
-    email: 'contact@tango-frontiere.example.org'
+    email: 'contact@tango-frontiere.example.org',
+    website: 'https://tango-frontiere.example.org',
+    socialLinks: [
+      'https://www.instagram.com/tangofrontiere.example',
+      'https://www.facebook.com/tangofrontiere.example',
+      'https://whatsapp.com/channel/tangofrontiere-example'
+    ]
   },
   {
     id: 'org-homburg',

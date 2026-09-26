@@ -220,6 +220,7 @@ export type Database = {
           name: string;
           phone: string | null;
           slug: string;
+          social_links: string[];
           website: string | null;
         };
         Insert: {
@@ -229,6 +230,7 @@ export type Database = {
           name: string;
           phone?: string | null;
           slug: string;
+          social_links?: string[];
           website?: string | null;
         };
         Update: {
@@ -238,6 +240,7 @@ export type Database = {
           name?: string;
           phone?: string | null;
           slug?: string;
+          social_links?: string[];
           website?: string | null;
         };
         Relationships: [];
@@ -291,12 +294,14 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
+      are_http_urls: { Args: { urls: string[] }; Returns: boolean };
       create_organization: {
         Args: {
           p_email?: string;
           p_name: string;
           p_phone?: string;
           p_slug: string;
+          p_social_links?: string[];
           p_website?: string;
         };
         Returns: {
@@ -306,6 +311,7 @@ export type Database = {
           name: string;
           phone: string | null;
           slug: string;
+          social_links: string[];
           website: string | null;
         };
         SetofOptions: {

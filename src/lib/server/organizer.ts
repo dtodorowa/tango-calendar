@@ -31,7 +31,7 @@ export async function listMemberships(
 ): Promise<Membership[]> {
   const { data, error } = await client
     .from('memberships')
-    .select('role, organizations ( id, name, slug, email, phone, website )')
+    .select('role, organizations ( id, name, slug, email, phone, website, social_links )')
     .eq('user_id', userId);
   if (error) throw error;
   return data
@@ -56,7 +56,8 @@ export async function createOrganization(
       p_slug: slug,
       p_email: input.email ?? undefined,
       p_phone: input.phone ?? undefined,
-      p_website: input.website ?? undefined
+      p_website: input.website ?? undefined,
+      p_social_links: input.socialLinks
     });
     if (!error) return toOrganization(data);
     if (error.code !== UNIQUE_VIOLATION) throw error;
@@ -71,7 +72,13 @@ export async function updateOrganization(
 ): Promise<void> {
   const { error } = await client
     .from('organizations')
-    .update({ name: input.name, email: input.email, phone: input.phone, website: input.website })
+    .update({
+      name: input.name,
+      email: input.email,
+      phone: input.phone,
+      website: input.website,
+      social_links: input.socialLinks
+    })
     .eq('id', id);
   if (error) throw error;
 }

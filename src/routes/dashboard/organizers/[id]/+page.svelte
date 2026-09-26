@@ -31,7 +31,8 @@
     name: organization.name,
     email: organization.email ?? '',
     phone: organization.phone ?? '',
-    website: organization.website ?? ''
+    website: organization.website ?? '',
+    socialLinks: organization.socialLinks ?? []
   }}
   errors={failed?.errors}
   formError={failed?.formError}

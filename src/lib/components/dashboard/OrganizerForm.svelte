@@ -6,8 +6,15 @@
   import type { ErrorCode } from '$lib/i18n/dashboard';
   import type { FieldErrors } from '$lib/validation';
   import FormField from './FormField.svelte';
+  import SocialLinksField from './SocialLinksField.svelte';
 
-  type Values = { name: string; email: string; phone: string; website: string };
+  type Values = {
+    name: string;
+    email: string;
+    phone: string;
+    website: string;
+    socialLinks: string[];
+  };
   type Props = {
     action: string;
     values: Values;
@@ -96,6 +103,8 @@
       />
     {/snippet}
   </FormField>
+
+  <SocialLinksField links={values.socialLinks} {errors} />
 
   {#if formError}
     <p class="text-sm text-destructive" role="alert">{d.errors[formError]}</p>

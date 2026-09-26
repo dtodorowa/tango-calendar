@@ -14,6 +14,7 @@
   import { primaryStyle } from '$lib/components/calendar/category-style';
   import { eventHref, osmHref, websiteLabel } from '$lib/components/calendar/links';
   import AppHeader from '$lib/components/layout/AppHeader.svelte';
+  import SocialLinks from '$lib/components/social/SocialLinks.svelte';
   import { Button } from '$lib/components/ui/button';
   import { formatLongDate, formatShortDate, formatTimeRange } from '$lib/format';
   import { getI18n } from '$lib/i18n/context';
@@ -51,7 +52,12 @@
             address: venue.address,
             geo: { '@type': 'GeoCoordinates', latitude: venue.lat, longitude: venue.lng }
           },
-          organizer: { '@type': 'Organization', name: org.name, url: org.website ?? undefined },
+          organizer: {
+            '@type': 'Organization',
+            name: org.name,
+            url: org.website ?? undefined,
+            sameAs: org.socialLinks?.length ? org.socialLinks : undefined
+          },
           offers:
             event.price.kind === 'fixed'
               ? { '@type': 'Offer', price: event.price.amount, priceCurrency: 'EUR' }
@@ -216,6 +222,9 @@
             <Globe size={15} class="text-muted-foreground" />
             {websiteLabel(org.website)}
           </a>
+        {/if}
+        {#if org.socialLinks?.length}
+          <SocialLinks links={org.socialLinks} class="pt-1" />
         {/if}
       </section>
 

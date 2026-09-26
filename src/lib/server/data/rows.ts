@@ -21,7 +21,7 @@ import type { SeriesWithContext } from './source';
 
 export type OrganizationRow = Pick<
   Tables<'organizations'>,
-  'id' | 'name' | 'slug' | 'email' | 'phone' | 'website'
+  'id' | 'name' | 'slug' | 'email' | 'phone' | 'website' | 'social_links'
 >;
 export type VenueRow = Pick<
   Tables<'venues'>,
@@ -59,7 +59,7 @@ export type EventRow = Pick<
 export const EVENT_SELECT = `
   id, org_id, venue_id, categories, tags, status, rrule, dtstart_local, timezone,
   duration_minutes, price_kind, price_amount, source_lang, hero_photo,
-  organizations ( id, name, slug, email, phone, website ),
+  organizations ( id, name, slug, email, phone, website, social_links ),
   venues ( id, org_id, name, address, lat, lng, city, country ),
   event_i18n ( locale, title, description, note ),
   occurrence_overrides ( occ_date, status, override_start_local )
@@ -72,7 +72,8 @@ export function toOrganization(row: OrganizationRow): Organization {
     slug: row.slug,
     email: row.email,
     phone: row.phone,
-    website: row.website
+    website: row.website,
+    socialLinks: row.social_links
   };
 }
 

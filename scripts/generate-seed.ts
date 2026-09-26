@@ -24,7 +24,7 @@ const lines: string[] = [
 
 for (const org of organizations) {
   lines.push(
-    `insert into organizations (id, name, slug, email, phone, website) values (${id(org.id)}, ${text(org.name)}, ${text(org.slug)}, ${text(org.email)}, ${text(org.phone)}, ${text(org.website)});`
+    `insert into organizations (id, name, slug, email, phone, website, social_links) values (${id(org.id)}, ${text(org.name)}, ${text(org.slug)}, ${text(org.email)}, ${text(org.phone)}, ${text(org.website)}, ${textArray(org.socialLinks ?? [])});`
   );
 }
 lines.push('');

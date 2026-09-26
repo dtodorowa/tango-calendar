@@ -43,7 +43,7 @@ export function supabaseSource(client: AppSupabaseClient): EventSource {
     async listOrganizations() {
       const { data, error } = await client
         .from('organizations')
-        .select('id, name, slug, email, phone, website')
+        .select('id, name, slug, email, phone, website, social_links')
         .order('name');
       if (error) throw error;
       return data.map(toOrganization);

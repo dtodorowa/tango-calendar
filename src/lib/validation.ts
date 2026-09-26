@@ -5,6 +5,7 @@ import { z } from 'zod';
 import type { ErrorCode } from '$lib/i18n/dashboard';
 import { COUNTRIES } from '$lib/i18n/dashboard';
 import { ORDINALS, WEEKDAYS } from '$lib/repeat';
+import { MAX_SOCIAL_LINKS } from '$lib/social';
 import { CATEGORIES, LOCALES, TAGS } from '$lib/types';
 
 const code = (value: ErrorCode) => ({ message: value });
@@ -32,6 +33,13 @@ export const otpSchema = z
   .trim()
   .regex(/^\d{6}$/, code('invalidCode'));
 
+const optionalUrl = z
+  .string()
+  .trim()
+  .max(300, code('tooLong'))
+  .refine((value) => !value || /^https?:\/\/\S+\.\S+$/.test(value), code('invalidUrl'))
+  .transform((value) => value || null);
+
 export const organizerSchema = z.object({
   name: requiredText(120),
   email: z
@@ -41,12 +49,11 @@ export const organizerSchema = z.object({
     .refine((value) => !value || z.email().safeParse(value).success, code('invalidEmail'))
     .transform((value) => value || null),
   phone: optionalText(40),
-  website: z
-    .string()
-    .trim()
-    .max(300, code('tooLong'))
-    .refine((value) => !value || /^https?:\/\/\S+\.\S+/.test(value), code('invalidUrl'))
-    .transform((value) => value || null)
+  website: optionalUrl,
+  socialLinks: z
+    .array(optionalUrl)
+    .transform((links) => links.filter((link) => link !== null))
+    .pipe(z.array(z.string()).max(MAX_SOCIAL_LINKS, code('tooMany')))
 });
 export type OrganizerInput = z.output<typeof organizerSchema>;
 

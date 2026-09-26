@@ -48,6 +48,8 @@ export interface Organization {
   email?: string | null;
   phone?: string | null;
   website?: string | null;
+  /** Profile URLs (Instagram, Facebook, ...); the platform is inferred from the host. */
+  socialLinks?: string[];
 }
 
 export interface Venue {

@@ -27,7 +27,13 @@
   </div>
   <OrganizerForm
     action="?/createOrganizer"
-    values={failed?.values ?? { name: '', email: data.userEmail ?? '', phone: '', website: '' }}
+    values={failed?.values ?? {
+      name: '',
+      email: data.userEmail ?? '',
+      phone: '',
+      website: '',
+      socialLinks: []
+    }}
     errors={failed?.errors}
     formError={failed?.formError}
     submitLabel={d.organizer.create}

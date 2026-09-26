@@ -6,6 +6,7 @@ import type { Locale } from '$lib/types';
 export const ERROR_CODES = [
   'required',
   'tooLong',
+  'tooMany',
   'invalidEmail',
   'invalidUrl',
   'invalidCode',
@@ -52,6 +53,11 @@ export interface DashboardMessages {
     email: string;
     phone: string;
     website: string;
+    socialLinks: string;
+    socialLinksHint: string;
+    socialLink: string;
+    addSocialLink: string;
+    removeSocialLink: string;
     publicHint: string;
     create: string;
     save: string;
@@ -149,6 +155,7 @@ const de: DashboardMessages = {
   errors: {
     required: 'Bitte ausfüllen.',
     tooLong: 'Das ist zu lang.',
+    tooMany: 'Das sind zu viele.',
     invalidEmail: 'Das sieht nicht nach einer E-Mail-Adresse aus.',
     invalidUrl: 'Bitte mit https:// beginnen.',
     invalidCode: 'Der Code stimmt nicht oder ist abgelaufen.',
@@ -175,6 +182,11 @@ const de: DashboardMessages = {
     email: 'Kontakt-E-Mail',
     phone: 'Telefon',
     website: 'Website',
+    socialLinks: 'Social Media',
+    socialLinksHint: 'Links zu Instagram, Facebook, WhatsApp-Kanal und Co. Bis zu 6.',
+    socialLink: 'Social-Media-Link',
+    addSocialLink: 'Weiteren Link hinzufügen',
+    removeSocialLink: 'Link entfernen',
     publicHint: 'Diese Kontaktdaten stehen öffentlich bei deinen Events. Alles optional.',
     create: 'Profil anlegen',
     save: 'Speichern',
@@ -274,6 +286,7 @@ const en: DashboardMessages = {
   errors: {
     required: 'Please fill this in.',
     tooLong: 'That is too long.',
+    tooMany: 'That is too many.',
     invalidEmail: 'That does not look like an email address.',
     invalidUrl: 'Please start with https://.',
     invalidCode: 'The code is wrong or has expired.',
@@ -299,6 +312,11 @@ const en: DashboardMessages = {
     email: 'Contact email',
     phone: 'Phone',
     website: 'Website',
+    socialLinks: 'Social media',
+    socialLinksHint: 'Links to Instagram, Facebook, a WhatsApp channel and so on. Up to 6.',
+    socialLink: 'Social media link',
+    addSocialLink: 'Add another link',
+    removeSocialLink: 'Remove link',
     publicHint: 'These contact details are shown publicly with your events. All optional.',
     create: 'Create profile',
     save: 'Save',
@@ -398,6 +416,7 @@ const fr: DashboardMessages = {
   errors: {
     required: 'Merci de remplir ce champ.',
     tooLong: 'C’est trop long.',
+    tooMany: 'C’est trop.',
     invalidEmail: 'Cela ne ressemble pas à une adresse e-mail.',
     invalidUrl: 'Merci de commencer par https://.',
     invalidCode: 'Le code est faux ou a expiré.',
@@ -423,6 +442,11 @@ const fr: DashboardMessages = {
     email: 'E-mail de contact',
     phone: 'Téléphone',
     website: 'Site web',
+    socialLinks: 'Réseaux sociaux',
+    socialLinksHint: 'Liens vers Instagram, Facebook, une chaîne WhatsApp, etc. Jusqu’à 6.',
+    socialLink: 'Lien réseau social',
+    addSocialLink: 'Ajouter un lien',
+    removeSocialLink: 'Retirer le lien',
     publicHint:
       'Ces coordonnées sont affichées publiquement avec tes événements. Tout est facultatif.',
     create: 'Créer le profil',
