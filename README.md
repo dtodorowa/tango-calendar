@@ -24,7 +24,7 @@ it up as a forkable community calendar once it works for tango.
 
 SvelteKit 2 · Svelte 5 (runes only) · TypeScript (strict) · Tailwind v4 ·
 shadcn-svelte (bits-ui) · `@lucide/svelte` · Leaflet + OSM · Node 22 · pnpm.
-Deploys to Vercel (`fra1`). Data layer: **Supabase EU** (a new project, separate
+Deploys to Vercel (`dub1`, next to the database). Data layer: **Supabase EU** (a new project, separate
 from tkRaum) — Postgres + PostGIS, Auth, Storage, Row-Level Security.
 
 ## Develop

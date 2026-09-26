@@ -13,8 +13,8 @@ export default defineConfig({
           filename.split(/[/\\]/).includes('node_modules') ? undefined : true
       },
 
-      // Functions run in Frankfurt, next to the Supabase EU project.
-      adapter: adapter({ runtime: 'nodejs22.x', regions: ['fra1'] })
+      // Functions run in Dublin, next to the Supabase project (eu-west-1).
+      adapter: adapter({ runtime: 'nodejs22.x', regions: ['dub1'] })
     })
   ],
   // rrule ships CommonJS; let Vite bundle it for SSR so Node's native ESM interop

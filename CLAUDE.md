@@ -15,7 +15,7 @@ Companion docs:
 
 - **Current scope:** v1 ships as the **SaarLorLux+ Tango Calendar** for one
   community; multi-tenant self-service comes later (ADR-0006). Hosted on Vercel
-  `fra1` (ADR-0007).
+  `dub1`, next to the Supabase project in eu-west-1 (ADR-0007).
 
 - **Wann-der** is a standalone, multi-tenant, **embeddable community events
   calendar**. "When" + "wander". Any organizer self-manages events; any site embeds

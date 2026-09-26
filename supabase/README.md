@@ -46,7 +46,8 @@ is not used anywhere in `src/`.
 
 ## Production project
 
-1. Create a project in **EU (Frankfurt)**.
+1. Create a project in an EU region. Production runs in `eu-west-1` (Ireland);
+   keep the Vercel function region in `vite.config.ts` next to it.
 2. Push the schema: `pnpm supabase link --project-ref <ref>` then
    `pnpm supabase db push`. Don't load `seed.sql` there; it's demo data.
 3. **Authentication → URL configuration:** set the site URL to the production

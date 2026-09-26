@@ -1,13 +1,13 @@
 ---
-name: adr-0007-host-on-vercel-fra1
-description: The SvelteKit app deploys to Vercel with functions pinned to fra1; data stays in Supabase EU
+name: adr-0007-host-on-vercel
+description: The SvelteKit app deploys to Vercel with functions pinned next to the Supabase EU project (dub1)
 metadata:
   type: reference
 ---
 
-# ADR-0007: Host on Vercel, functions in Frankfurt
+# ADR-0007: Host on Vercel, functions next to the database
 
-**Status:** Proposed
+**Status:** Accepted
 **Date:** 2026-09-26
 
 ## Context
@@ -18,8 +18,10 @@ maintenance for a volunteer-run project.
 
 ## Decision
 
-Deploy with `@sveltejs/adapter-vercel`, serverless functions pinned to `fra1`
-(Frankfurt) so they run next to the Supabase EU project.
+Deploy with `@sveltejs/adapter-vercel`, serverless functions pinned to `dub1`
+(Dublin) so they run next to the Supabase project, which lives in `eu-west-1`
+(Ireland). A Supabase project's region can't change after creation, so the
+functions follow the database, not the other way round.
 
 - Event data, accounts and photos live in Supabase EU. Vercel serves pages and runs
   functions but holds no database.
