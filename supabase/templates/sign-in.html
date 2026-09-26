@@ -1,0 +1,86 @@
+<!-- .Data is the user's metadata; the login action stores the site language there as `locale`.
+     The `and` guard keeps `eq` from comparing a missing key. Accounts without a locale get all three. -->
+<h2>SaarLorLux+ Tango Calendar</h2>
+{{ if and .Data.locale (eq .Data.locale "de") }}
+<p>Tippe auf den Button, um dich anzumelden:</p>
+<p>
+  <a
+    href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}"
+    style="
+      display: inline-block;
+      padding: 12px 24px;
+      background: #473d7f;
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: bold;
+    "
+    >Anmelden</a
+  >
+</p>
+<p>Der Link gilt eine Stunde und funktioniert einmal.</p>
+<p style="color: #6f6a73">Nicht angefordert? Einfach ignorieren.</p>
+{{ else if and .Data.locale (eq .Data.locale "en") }}
+<p>Tap the button to sign in:</p>
+<p>
+  <a
+    href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}"
+    style="
+      display: inline-block;
+      padding: 12px 24px;
+      background: #473d7f;
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: bold;
+    "
+    >Sign in</a
+  >
+</p>
+<p>The link is valid for one hour and works once.</p>
+<p style="color: #6f6a73">Didn't ask for this? Ignore this email.</p>
+{{ else if and .Data.locale (eq .Data.locale "fr") }}
+<p>Appuie sur le bouton pour te connecter :</p>
+<p>
+  <a
+    href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}"
+    style="
+      display: inline-block;
+      padding: 12px 24px;
+      background: #473d7f;
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: bold;
+    "
+    >Se connecter</a
+  >
+</p>
+<p>Le lien est valable une heure et ne fonctionne qu’une fois.</p>
+<p style="color: #6f6a73">Pas demandé ? Ignore cet e-mail.</p>
+{{ else }}
+<p>
+  Tippe auf den Button, um dich anzumelden · Tap the button to sign in · Appuie sur le bouton pour
+  te connecter :
+</p>
+<p>
+  <a
+    href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}"
+    style="
+      display: inline-block;
+      padding: 12px 24px;
+      background: #473d7f;
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: bold;
+    "
+    >Anmelden · Sign in · Se connecter</a
+  >
+</p>
+<p>Der Link gilt eine Stunde. · The link is valid for one hour. · Le lien est valable une heure.</p>
+<p style="color: #6f6a73">
+  Nicht angefordert? Einfach ignorieren. · Didn't ask for this? Ignore this email. · Pas demandé ?
+  Ignore cet e-mail.
+</p>
+{{ end }}

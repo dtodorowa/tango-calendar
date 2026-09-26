@@ -49,13 +49,30 @@ is not used anywhere in `src/`.
 1. Create a project in an EU region. Production runs in `eu-west-1` (Ireland);
    keep the Vercel function region in `vite.config.ts` next to it.
 2. Push the schema: `pnpm supabase link --project-ref <ref>` then
-   `pnpm supabase db push`. Don't load `seed.sql` there; it's demo data.
+   `pnpm supabase db push`. Don't load `seed.sql` there; it's demo data. If you
+   loaded it for a demo, `pnpm supabase db query --linked -f supabase/demo-cleanup.sql`
+   removes exactly those rows and leaves real organizers alone.
 3. **Authentication → URL configuration:** set the site URL to the production
    domain.
-4. **Authentication → Emails:** paste `templates/otp.html` into both the "Magic
-   link" and "Confirm signup" templates. The stock templates send a link; ours
-   sends the `{{ .Token }}` code the login form asks for.
-5. **Authentication → SMTP:** configure a real mail provider (an EU one, see
-   AGENTS.md > Privacy). Supabase's built-in sender is rate-limited to a handful of
-   emails an hour.
+4. **Authentication → Emails → SMTP Settings:** turn on custom SMTP. Supabase's
+   built-in sender is rate-limited to a handful of emails an hour and keeps the
+   templates locked. We use [Lettermint](https://lettermint.co) (Netherlands, so
+   the mail path stays in the EU, see AGENTS.md > Privacy):
+   - In Lettermint, create a project and add a sending domain you control. A
+     `*.vercel.app` address won't work: you can't edit its DNS, and Vercel's
+     DMARC policy rejects mail sent in its name. Add the DNS records Lettermint
+     shows and wait for it to verify.
+   - Create a token under Projects → your project → API Tokens.
+   - In Supabase: host `smtp.lettermint.co`, port `587`, username `lettermint`,
+     password the project token, sender `login@<your domain>`, sender name
+     `SaarLorLux+ Tango Calendar`.
+5. **Authentication → Emails → Templates:** paste `templates/sign-in.html` into both
+   the "Magic link" and "Confirm signup" templates, with the subject
+   `Dein Anmeldelink / Your sign-in link / Ton lien de connexion` on both. The
+   email's button links to `{{ .SiteURL }}/auth/confirm`, so the site URL from
+   step 3 must be the production domain.
+   Links from preview deployments also land on production. It picks
+   de/en/fr from the `locale` the login form stores in the user's metadata, so
+   the email comes in the language the person last used the site in. Accounts
+   with no stored locale get all three. Re-paste it whenever the file changes.
 6. Set `PUBLIC_SUPABASE_URL` and `PUBLIC_SUPABASE_ANON_KEY` in Vercel.

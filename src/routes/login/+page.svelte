@@ -18,6 +18,8 @@
   const step = $derived(restarted ? 'email' : (form?.step ?? 'email'));
   const email = $derived(form && 'email' in form ? (form.email ?? '') : '');
   const nextParam = $derived(`next=${encodeURIComponent(data.next)}`);
+  // Only until the next submit, so a stale "link expired" doesn't linger.
+  const emailError = $derived(form ? form.error : data.linkError);
 
   function submitting() {
     pending = true;
@@ -61,43 +63,18 @@
           required
           value={email}
           class="h-11 bg-card"
-          aria-invalid={form?.error ? 'true' : undefined}
-          aria-describedby={form?.error ? 'login-error' : undefined}
+          aria-invalid={emailError ? 'true' : undefined}
+          aria-describedby={emailError ? 'login-error' : undefined}
         />
       </div>
-      {#if form?.error}
-        <p id="login-error" class="text-sm text-destructive">{d.errors[form.error]}</p>
+      {#if emailError}
+        <p id="login-error" class="text-sm text-destructive">{d.errors[emailError]}</p>
       {/if}
-      <Button type="submit" class="h-11" disabled={pending}>{d.login.sendCode}</Button>
+      <Button type="submit" class="h-11" disabled={pending}>{d.login.sendLink}</Button>
     </form>
   {:else}
-    <form
-      method="POST"
-      action="?/verify&{nextParam}"
-      use:enhance={submitting}
-      class="surface flex flex-col gap-4 p-5"
-    >
-      <p class="text-sm">{d.login.codeSent(email)}</p>
-      <input type="hidden" name="email" value={email} />
-      <div class="flex flex-col gap-2">
-        <Label for="code">{d.login.code}</Label>
-        <Input
-          id="code"
-          name="code"
-          inputmode="numeric"
-          autocomplete="one-time-code"
-          pattern="[0-9]{'{'}6{'}'}"
-          maxlength={6}
-          required
-          class="h-12 bg-card text-center text-step1 tracking-[0.5em]"
-          aria-invalid={form?.error ? 'true' : undefined}
-          aria-describedby={form?.error ? 'login-error' : undefined}
-        />
-      </div>
-      {#if form?.error}
-        <p id="login-error" class="text-sm text-destructive">{d.errors[form.error]}</p>
-      {/if}
-      <Button type="submit" class="h-11" disabled={pending}>{d.login.verify}</Button>
+    <div class="surface flex flex-col gap-4 p-5" role="status">
+      <p class="text-sm">{d.login.linkSent(email)}</p>
       <button
         type="button"
         class="self-start text-sm text-primary hover:underline"
@@ -105,6 +82,6 @@
       >
         {d.login.otherEmail}
       </button>
-    </form>
+    </div>
   {/if}
 </main>

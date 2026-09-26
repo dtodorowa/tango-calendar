@@ -242,14 +242,14 @@ otp_expiry = 3600
 # admin_email = "admin@email.com"
 # sender_name = "Admin"
 
-# Sign-in uses a 6-digit code (signInWithOtp + verifyOtp), so both templates show the token.
+# Sign-in emails a link to /auth/confirm. New and returning users get the same email.
 [auth.email.template.magic_link]
-subject = "Dein Anmeldecode / Your sign-in code"
-content_path = "./supabase/templates/otp.html"
+subject = "Dein Anmeldelink / Your sign-in link / Ton lien de connexion"
+content_path = "./supabase/templates/sign-in.html"
 
 [auth.email.template.confirmation]
-subject = "Dein Anmeldecode / Your sign-in code"
-content_path = "./supabase/templates/otp.html"
+subject = "Dein Anmeldelink / Your sign-in link / Ton lien de connexion"
+content_path = "./supabase/templates/sign-in.html"
 
 # Uncomment to customize email template
 # [auth.email.template.invite]

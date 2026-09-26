@@ -28,11 +28,6 @@ export const emailSchema = z
   .max(254, code('tooLong'))
   .email(code('invalidEmail'));
 
-export const otpSchema = z
-  .string()
-  .trim()
-  .regex(/^\d{6}$/, code('invalidCode'));
-
 const optionalUrl = z
   .string()
   .trim()

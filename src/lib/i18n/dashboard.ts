@@ -11,7 +11,7 @@ export const ERROR_CODES = [
   'imageTooLarge',
   'invalidEmail',
   'invalidUrl',
-  'invalidCode',
+  'invalidLink',
   'invalidDate',
   'invalidTime',
   'pickCategory',
@@ -40,11 +40,14 @@ export interface DashboardMessages {
     title: string;
     intro: string;
     email: string;
-    sendCode: string;
-    codeSent: (email: string) => string;
-    code: string;
-    verify: string;
+    sendLink: string;
+    linkSent: (email: string) => string;
     otherEmail: string;
+  };
+  confirm: {
+    title: string;
+    intro: string;
+    button: string;
   };
   errors: Record<ErrorCode, string>;
   organizer: {
@@ -157,13 +160,17 @@ const de: DashboardMessages = {
   login: {
     title: 'Anmelden',
     intro:
-      'Veranstalter melden sich mit einem Code per E-Mail an. Kein Passwort, kein Konto anlegen.',
+      'Veranstalter melden sich mit einem Link per E-Mail an. Kein Passwort, kein Konto anlegen.',
     email: 'E-Mail-Adresse',
-    sendCode: 'Code senden',
-    codeSent: (email) => `Wir haben einen 6-stelligen Code an ${email} geschickt.`,
-    code: 'Code',
-    verify: 'Anmelden',
+    sendLink: 'Link senden',
+    linkSent: (email) =>
+      `Wir haben einen Anmeldelink an ${email} geschickt. Öffne ihn auf einem beliebigen Gerät. Nichts angekommen? Schau im Spam-Ordner nach.`,
     otherEmail: 'Andere E-Mail verwenden'
+  },
+  confirm: {
+    title: 'Anmeldung abschließen',
+    intro: 'Noch ein Klick, dann bist du angemeldet.',
+    button: 'Anmelden'
   },
   errors: {
     required: 'Bitte ausfüllen.',
@@ -173,7 +180,7 @@ const de: DashboardMessages = {
     imageTooLarge: 'Das Bild ist zu groß. Bitte ein kleineres wählen.',
     invalidEmail: 'Das sieht nicht nach einer E-Mail-Adresse aus.',
     invalidUrl: 'Bitte mit https:// beginnen.',
-    invalidCode: 'Der Code stimmt nicht oder ist abgelaufen.',
+    invalidLink: 'Der Link ist abgelaufen oder wurde schon benutzt. Fordere hier einen neuen an.',
     invalidDate: 'Bitte ein gültiges Datum wählen.',
     invalidTime: 'Bitte eine gültige Uhrzeit wählen.',
     pickCategory: 'Bitte mindestens eine Art wählen.',
@@ -302,13 +309,17 @@ const en: DashboardMessages = {
   backToCalendar: 'To the calendar',
   login: {
     title: 'Sign in',
-    intro: 'Organizers sign in with a code sent by email. No password, no account setup.',
+    intro: 'Organizers sign in with a link sent by email. No password, no account setup.',
     email: 'Email address',
-    sendCode: 'Send code',
-    codeSent: (email) => `We sent a 6-digit code to ${email}.`,
-    code: 'Code',
-    verify: 'Sign in',
+    sendLink: 'Send link',
+    linkSent: (email) =>
+      `We sent a sign-in link to ${email}. Open it on any device. Nothing there? Check your spam folder.`,
     otherEmail: 'Use a different email'
+  },
+  confirm: {
+    title: 'Finish signing in',
+    intro: 'One more click and you are signed in.',
+    button: 'Sign in'
   },
   errors: {
     required: 'Please fill this in.',
@@ -318,7 +329,7 @@ const en: DashboardMessages = {
     imageTooLarge: 'That image is too large. Please pick a smaller one.',
     invalidEmail: 'That does not look like an email address.',
     invalidUrl: 'Please start with https://.',
-    invalidCode: 'The code is wrong or has expired.',
+    invalidLink: 'That link has expired or was already used. Request a new one here.',
     invalidDate: 'Please pick a valid date.',
     invalidTime: 'Please pick a valid time.',
     pickCategory: 'Please pick at least one type.',
@@ -445,13 +456,17 @@ const fr: DashboardMessages = {
   login: {
     title: 'Se connecter',
     intro:
-      'Les organisateurs se connectent avec un code envoyé par e-mail. Pas de mot de passe, pas de compte à créer.',
+      'Les organisateurs se connectent avec un lien envoyé par e-mail. Pas de mot de passe, pas de compte à créer.',
     email: 'Adresse e-mail',
-    sendCode: 'Envoyer le code',
-    codeSent: (email) => `Nous avons envoyé un code à 6 chiffres à ${email}.`,
-    code: 'Code',
-    verify: 'Se connecter',
+    sendLink: 'Envoyer le lien',
+    linkSent: (email) =>
+      `Nous avons envoyé un lien de connexion à ${email}. Ouvre-le sur n’importe quel appareil. Rien reçu ? Regarde dans les spams.`,
     otherEmail: 'Utiliser une autre adresse'
+  },
+  confirm: {
+    title: 'Terminer la connexion',
+    intro: 'Encore un clic et tu es connecté.',
+    button: 'Se connecter'
   },
   errors: {
     required: 'Merci de remplir ce champ.',
@@ -461,7 +476,7 @@ const fr: DashboardMessages = {
     imageTooLarge: 'Cette image est trop lourde. Merci d’en choisir une plus petite.',
     invalidEmail: 'Cela ne ressemble pas à une adresse e-mail.',
     invalidUrl: 'Merci de commencer par https://.',
-    invalidCode: 'Le code est faux ou a expiré.',
+    invalidLink: 'Ce lien a expiré ou a déjà été utilisé. Demandes-en un nouveau ici.',
     invalidDate: 'Merci de choisir une date valide.',
     invalidTime: 'Merci de choisir une heure valide.',
     pickCategory: 'Merci de choisir au moins un type.',
