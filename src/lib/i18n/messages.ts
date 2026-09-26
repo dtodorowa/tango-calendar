@@ -49,6 +49,7 @@ export interface Messages {
   mapLabel: string;
   selectDay: (day: string) => string;
   eventsOnDay: (day: string) => string;
+  allDays: string;
   moreEvents: (count: number) => string;
   footerNote: string;
   forOrganizers: string;
@@ -114,6 +115,7 @@ const de: Messages = {
   mapLabel: 'Karte der Veranstaltungsorte',
   selectDay: (day) => `${day} auswählen`,
   eventsOnDay: (day) => `Events am ${day}`,
+  allDays: 'Alle Tage',
   moreEvents: (count) => `+${count} weitere`,
   footerNote: 'Ein Community-Kalender für die Tangoszene in der Großregion.',
   forOrganizers: 'Für Veranstalter'
@@ -179,6 +181,7 @@ const en: Messages = {
   mapLabel: 'Map of venues',
   selectDay: (day) => `Select ${day}`,
   eventsOnDay: (day) => `Events on ${day}`,
+  allDays: 'All days',
   moreEvents: (count) => `+${count} more`,
   footerNote: 'A community calendar for the tango scene in the Greater Region.',
   forOrganizers: 'For organizers'
@@ -244,6 +247,7 @@ const fr: Messages = {
   mapLabel: 'Carte des lieux',
   selectDay: (day) => `Choisir le ${day}`,
   eventsOnDay: (day) => `Événements du ${day}`,
+  allDays: 'Tous les jours',
   moreEvents: (count) => `+${count} autres`,
   footerNote: 'Un calendrier communautaire pour la scène tango de la Grande Région.',
   forOrganizers: 'Organisateurs'

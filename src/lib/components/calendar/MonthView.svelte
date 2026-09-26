@@ -16,7 +16,7 @@
     weeks: GridDay[][];
     occurrences: Occurrence[];
     todayKey: string;
-    /** Link to the list view scrolled to a day, for "+n more". */
+    /** Link to the list view showing only one day, for "+n more". */
     dayListHref: (dateKey: string) => string;
   };
   let { weeks, occurrences, todayKey, dayListHref }: Props = $props();

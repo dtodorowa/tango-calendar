@@ -12,7 +12,6 @@
   import MapView from '$lib/components/calendar/MapView.svelte';
   import MonthView from '$lib/components/calendar/MonthView.svelte';
   import SearchField from '$lib/components/calendar/SearchField.svelte';
-  import { dayAnchorId } from '$lib/components/calendar/group';
   import AppHeader from '$lib/components/layout/AppHeader.svelte';
   import { Button } from '$lib/components/ui/button';
   import * as Drawer from '$lib/components/ui/drawer';
@@ -42,6 +41,7 @@
     const raw = page.url.searchParams.get('view');
     return VIEWS.find((option) => option === raw) ?? 'list';
   });
+  const day = $derived(page.url.searchParams.get('day'));
 
   // Search is local so typing never waits on navigation; it syncs to the URL
   // after a short pause.
@@ -62,7 +62,11 @@
     searchTimer = setTimeout(() => updateFilters(filters), 350);
   }
 
-  function hrefWith(changes: Record<string, string | null>, hash = ''): string {
+  function selectDay(key: string | null) {
+    goto(hrefWith({ day: key }), { replaceState: true, keepFocus: true, noScroll: true });
+  }
+
+  function hrefWith(changes: Record<string, string | null>): string {
     const params = new URLSearchParams(page.url.searchParams);
     for (const [key, value] of Object.entries(changes)) {
       if (value === null) params.delete(key);
@@ -70,7 +74,7 @@
     }
     if (query.trim()) params.set('q', query.trim());
     const search = params.toString();
-    return `${page.url.pathname}${search ? `?${search}` : ''}${hash}`;
+    return `${page.url.pathname}${search ? `?${search}` : ''}`;
   }
 
   // --- Month + derived data ------------------------------------------------
@@ -173,9 +177,9 @@
       title={monthTitle}
       {view}
       {isCurrentMonth}
-      previousHref={hrefWith({ month: formatYearMonth(shiftMonth(month, -1)) })}
-      nextHref={hrefWith({ month: formatYearMonth(shiftMonth(month, 1)) })}
-      todayHref={hrefWith({ month: null })}
+      previousHref={hrefWith({ month: formatYearMonth(shiftMonth(month, -1)), day: null })}
+      nextHref={hrefWith({ month: formatYearMonth(shiftMonth(month, 1)), day: null })}
+      todayHref={hrefWith({ month: null, day: null })}
       viewHref={(option) => hrefWith({ view: option === 'list' ? null : option })}
     />
 
@@ -185,13 +189,19 @@
           {weeks}
           occurrences={inMonth}
           todayKey={data.todayKey}
-          dayListHref={(key) => hrefWith({ view: null }, `#${dayAnchorId(key)}`)}
+          dayListHref={(key) => hrefWith({ view: null, day: key })}
         />
       {/key}
     {:else if view === 'map'}
       <MapView occurrences={upcoming} />
     {:else}
-      <ListView occurrences={upcoming} {stripDays} todayKey={data.todayKey} />
+      <ListView
+        occurrences={upcoming}
+        {stripDays}
+        todayKey={data.todayKey}
+        {day}
+        onSelectDay={selectDay}
+      />
     {/if}
   </main>
 </div>
