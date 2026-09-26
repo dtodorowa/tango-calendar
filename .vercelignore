@@ -1,0 +1,9 @@
+# Local-only: env with local Supabase keys, the Docker Supabase config, tooling.
+.env
+.env.*
+!.env.example
+supabase
+scripts
+.claude
+.vscode
+package-lock.json

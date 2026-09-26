@@ -1,0 +1,181 @@
+@import '@fontsource-variable/dm-sans';
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+/*
+ * Design tokens. Reference them in utilities (bg-primary, text-muted-foreground,
+ * bg-cat-milonga, …); never introduce raw hex or one-off font sizes inline.
+ * The semantic names (background, primary, muted, …) are the shadcn-svelte
+ * contract, so the components in src/lib/components/ui pick them up unchanged.
+ * See AGENTS.md > Styling.
+ */
+
+/* Light-only for now. Keeps shadcn's dark: classes from firing on OS dark mode. */
+@custom-variant dark (&:is(.dark *));
+
+/* The shadcn-svelte registry styles against these; bits-ui emits data-state / data-orientation. */
+@custom-variant data-horizontal (&[data-orientation='horizontal']);
+@custom-variant data-vertical (&[data-orientation='vertical']);
+@custom-variant data-open (&[data-state='open']);
+@custom-variant data-closed (&[data-state='closed']);
+@custom-variant data-checked (&[data-state='checked']);
+
+:root {
+  --radius: 0.75rem;
+
+  --background: #f7f5f1;
+  --foreground: #1f1d24;
+  --card: #ffffff;
+  --card-foreground: #1f1d24;
+  --popover: #ffffff;
+  --popover-foreground: #1f1d24;
+  --primary: #473d7f;
+  --primary-foreground: #ffffff;
+  --secondary: #efece6;
+  --secondary-foreground: #1f1d24;
+  --muted: #f1eee8;
+  --muted-foreground: #6f6a73;
+  --accent: #efece6;
+  --accent-foreground: #1f1d24;
+  --destructive: #c2410c;
+  --border: #e7e2d9;
+  --input: #ddd7cc;
+  --ring: #473d7f;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@theme {
+  /* Brand accents */
+  --color-primary-soft: #ecebf6;
+  --color-sand: #fbeedb;
+  --color-sand-foreground: #7a4b12;
+
+  /* Category palette: soft surface + strong text/dot per category */
+  --color-cat-milonga: #ece8fb;
+  --color-cat-milonga-strong: #5b45b0;
+  --color-cat-practica: #e3eefa;
+  --color-cat-practica-strong: #2c6aa0;
+  --color-cat-workshop: #e2f2e3;
+  --color-cat-workshop-strong: #2f7a3c;
+  --color-cat-festival: #fde4df;
+  --color-cat-festival-strong: #b2432f;
+  --color-cat-show: #fdead8;
+  --color-cat-show-strong: #b25a17;
+  --color-cat-cafe: #faf0d4;
+  --color-cat-cafe-strong: #8f6a0c;
+
+  /* Fonts */
+  --font-sans:
+    'DM Sans Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  /* Headings: same family, heavier and tighter (see .font-display below). */
+  --font-display:
+    'DM Sans Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: ui-monospace, 'SFMono-Regular', 'Menlo', 'Consolas', monospace;
+
+  /* Type scale (step0 = body) */
+  --text-step-1: 0.8125rem;
+  --text-step0: 1rem;
+  --text-step1: 1.25rem;
+  --text-step2: 1.6rem;
+  --text-step3: 2.1rem;
+  --text-step4: 2.8rem;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  :root {
+    color-scheme: light;
+  }
+
+  body {
+    @apply bg-background font-sans text-foreground antialiased;
+  }
+}
+
+@layer components {
+  /* Card-like surface: list rows, map panels, popovers we build ourselves. */
+  .surface {
+    @apply rounded-xl border border-border bg-card;
+  }
+
+  /* Filter pill (category chips, quick filters). */
+  .chip {
+    @apply inline-flex h-8 items-center gap-1.5 rounded-full border border-border bg-card px-3 text-sm font-medium text-foreground transition-colors hover:bg-muted focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none;
+  }
+
+  .chip[aria-pressed='true'] {
+    @apply border-transparent bg-sand text-sand-foreground;
+  }
+
+  /* Chip wrapping a native checkbox/radio (organizer forms). */
+  .choice {
+    @apply inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-full border border-border bg-card px-3.5 text-sm font-medium transition-colors select-none hover:bg-muted has-checked:border-transparent has-checked:bg-sand has-checked:text-sand-foreground has-focus-visible:ring-3 has-focus-visible:ring-ring/50;
+  }
+
+  /* Native form controls in organizer forms, matching the shadcn Input. */
+  .field {
+    @apply w-full rounded-lg border border-input bg-card px-3 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 aria-invalid:border-destructive;
+  }
+
+  /* Headings share the body family; weight and tracking carry the hierarchy.
+     An explicit font-* utility on the element still wins (utilities layer). */
+  .font-display {
+    font-weight: 600;
+    letter-spacing: -0.015em;
+  }
+
+  /* Small uppercase label (category badges). */
+  .eyebrow {
+    @apply text-[0.6875rem] font-semibold tracking-wide uppercase;
+  }
+}
+
+/* Leaflet overrides: soften the OSM tiles toward the calm mockup palette. */
+.leaflet-container {
+  font-family: var(--font-sans);
+  background: var(--muted);
+}
+
+.map-tiles-soft .leaflet-tile-pane {
+  filter: grayscale(0.55) saturate(0.8) brightness(1.04) contrast(0.92);
+}
+
+/* Motion must respect user preference. See AGENTS.md > Styling. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
