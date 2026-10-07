@@ -5,6 +5,7 @@ import Coffee from '@lucide/svelte/icons/coffee';
 import Drama from '@lucide/svelte/icons/drama';
 import Footprints from '@lucide/svelte/icons/footprints';
 import GraduationCap from '@lucide/svelte/icons/graduation-cap';
+import InfinityIcon from '@lucide/svelte/icons/infinity';
 import Music from '@lucide/svelte/icons/music';
 import PartyPopper from '@lucide/svelte/icons/party-popper';
 import Sparkles from '@lucide/svelte/icons/sparkles';
@@ -67,6 +68,13 @@ export const CATEGORY_STYLE: Record<Category, CategoryStyle> = {
     dot: 'bg-cat-hangout-strong',
     ring: 'ring-cat-hangout-strong',
     icon: PartyPopper
+  },
+  encuentro: {
+    surface: 'bg-cat-encuentro',
+    text: 'text-cat-encuentro-strong',
+    dot: 'bg-cat-encuentro-strong',
+    ring: 'ring-cat-encuentro-strong',
+    icon: InfinityIcon
   }
 };
 

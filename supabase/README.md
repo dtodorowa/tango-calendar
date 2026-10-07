@@ -40,6 +40,10 @@ http://127.0.0.1:54324 to read the 6-digit code.
 - `0003_save_event.sql`: `save_event()`, which writes an event and its
   translations in one transaction under the caller's RLS.
 - `0004_hangout_category.sql`: adds the `hangout` category.
+- `0005_organizer_social_links.sql`: organizer social links.
+- `0006_media.sql`: event photos and organizer logos in Storage.
+- `0007_more_social_links.sql`: raises the social link limit to 15.
+- `0008_encuentro_category.sql`: adds the `encuentro` category.
 
 Every write from the app goes through the anon key and RLS. The service-role key
 is not used anywhere in `src/`.

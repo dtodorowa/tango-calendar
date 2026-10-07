@@ -23,7 +23,8 @@ export const CATEGORIES = [
   'festival',
   'show',
   'cafe',
-  'hangout'
+  'hangout',
+  'encuentro'
 ] as const;
 export type Category = (typeof CATEGORIES)[number];
 

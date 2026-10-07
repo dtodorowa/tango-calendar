@@ -73,11 +73,12 @@ const de: Messages = {
   categories: {
     milonga: 'Milonga',
     practica: 'Práctica',
-    workshop: 'Workshop',
+    workshop: 'Kurs / Workshop',
     festival: 'Festival',
     show: 'Show',
     cafe: 'Café',
-    hangout: 'Treff'
+    hangout: 'Treff',
+    encuentro: 'Encuentro / Marathon'
   },
   categoryLegendOther: 'Sonstiges',
   organizers: 'Veranstalter',
@@ -142,11 +143,12 @@ const en: Messages = {
   categories: {
     milonga: 'Milonga',
     practica: 'Práctica',
-    workshop: 'Workshop',
+    workshop: 'Class / Workshop',
     festival: 'Festival',
     show: 'Show',
     cafe: 'Café',
-    hangout: 'Hangout'
+    hangout: 'Hangout',
+    encuentro: 'Encuentro / Marathon'
   },
   categoryLegendOther: 'Other',
   organizers: 'Organizers',
@@ -211,11 +213,12 @@ const fr: Messages = {
   categories: {
     milonga: 'Milonga',
     practica: 'Práctica',
-    workshop: 'Atelier',
+    workshop: 'Cours / Atelier',
     festival: 'Festival',
     show: 'Spectacle',
     cafe: 'Café',
-    hangout: 'Rencontre'
+    hangout: 'Rencontre',
+    encuentro: 'Encuentro / Marathon'
   },
   categoryLegendOther: 'Autre',
   organizers: 'Organisateurs',
