@@ -1,12 +1,20 @@
 <script lang="ts">
+  import Briefcase from '@lucide/svelte/icons/briefcase';
   import Link from '@lucide/svelte/icons/link';
+  import Ticket from '@lucide/svelte/icons/ticket';
   import {
     siBluesky,
     siFacebook,
     siInstagram,
+    siLinktree,
+    siMastodon,
+    siMeetup,
+    siSoundcloud,
+    siSpotify,
     siTelegram,
     siThreads,
     siTiktok,
+    siVimeo,
     siWhatsapp,
     siX,
     siYoutube,
@@ -15,7 +23,9 @@
   import type { SocialPlatform } from '$lib/social';
 
   // Lucide dropped brand glyphs, so platform logos come from simple-icons.
-  const ICONS: Record<SocialPlatform, SimpleIcon> = {
+  // LinkedIn and Eventbrite asked simple-icons to remove theirs, so those two
+  // get a generic Lucide glyph instead.
+  const ICONS: Record<SocialPlatform, SimpleIcon | typeof Link> = {
     instagram: siInstagram,
     facebook: siFacebook,
     whatsapp: siWhatsapp,
@@ -24,14 +34,24 @@
     tiktok: siTiktok,
     x: siX,
     bluesky: siBluesky,
-    threads: siThreads
+    threads: siThreads,
+    mastodon: siMastodon,
+    linkedin: Briefcase,
+    spotify: siSpotify,
+    soundcloud: siSoundcloud,
+    vimeo: siVimeo,
+    linktree: siLinktree,
+    meetup: siMeetup,
+    eventbrite: Ticket
   };
 
   type Props = { platform: SocialPlatform | null; size?: number; class?: string };
   let { platform, size = 16, class: className }: Props = $props();
+
+  const icon = $derived(platform ? ICONS[platform] : Link);
 </script>
 
-{#if platform}
+{#if 'path' in icon}
   <svg
     viewBox="0 0 24 24"
     width={size}
@@ -40,8 +60,9 @@
     aria-hidden="true"
     class={className}
   >
-    <path d={ICONS[platform].path} />
+    <path d={icon.path} />
   </svg>
 {:else}
-  <Link {size} aria-hidden="true" class={className} />
+  {@const Glyph = icon}
+  <Glyph {size} aria-hidden="true" class={className} />
 {/if}

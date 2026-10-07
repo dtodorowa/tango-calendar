@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { eventSchema, organizerSchema, safeNext, toFieldErrors } from './validation';
+import { MAX_SOCIAL_LINKS } from './social';
 
 const blankTranslation = { title: '', description: '', note: '' };
 
@@ -83,7 +84,7 @@ describe('organizerSchema', () => {
       email: 'nope',
       phone: '',
       website: 'tango.de',
-      socialLinks: ['https://instagram.com/tangosaar', 'instagram.com/tangosaar']
+      socialLinks: ['https://instagram.com/tangosaar', 'not a link']
     });
     expect(toFieldErrors(result.error!)).toEqual({
       name: 'required',
@@ -98,7 +99,13 @@ describe('organizerSchema', () => {
     expect(
       organizerSchema.parse({ ...base, socialLinks: ['', 'https://t.me/tangosaar'] }).socialLinks
     ).toEqual(['https://t.me/tangosaar']);
-    const tooMany = Array.from({ length: 7 }, (_, index) => `https://example.org/${index}`);
+    expect(
+      organizerSchema.parse({ ...base, socialLinks: ['instagram.com/tangosaar'] }).socialLinks
+    ).toEqual(['https://instagram.com/tangosaar']);
+    const tooMany = Array.from(
+      { length: MAX_SOCIAL_LINKS + 1 },
+      (_, index) => `https://example.org/${index}`
+    );
     const result = organizerSchema.safeParse({ ...base, socialLinks: tooMany });
     expect(toFieldErrors(result.error!)).toEqual({ socialLinks: 'tooMany' });
   });

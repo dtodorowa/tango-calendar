@@ -5,7 +5,7 @@ import { z } from 'zod';
 import type { ErrorCode } from '$lib/i18n/dashboard';
 import { COUNTRIES } from '$lib/i18n/dashboard';
 import { ORDINALS, WEEKDAYS } from '$lib/repeat';
-import { MAX_SOCIAL_LINKS } from '$lib/social';
+import { MAX_SOCIAL_LINKS, normalizeLink } from '$lib/social';
 import { CATEGORIES, LOCALES, TAGS } from '$lib/types';
 
 const code = (value: ErrorCode) => ({ message: value });
@@ -46,7 +46,7 @@ export const organizerSchema = z.object({
   phone: optionalText(40),
   website: optionalUrl,
   socialLinks: z
-    .array(optionalUrl)
+    .array(z.string().transform(normalizeLink).pipe(optionalUrl))
     .transform((links) => links.filter((link) => link !== null))
     .pipe(z.array(z.string()).max(MAX_SOCIAL_LINKS, code('tooMany')))
 });

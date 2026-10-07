@@ -59,7 +59,7 @@ export interface DashboardMessages {
     phone: string;
     website: string;
     socialLinks: string;
-    socialLinksHint: string;
+    socialLinksHint: (max: number) => string;
     socialLink: string;
     addSocialLink: string;
     removeSocialLink: string;
@@ -205,7 +205,8 @@ const de: DashboardMessages = {
     phone: 'Telefon',
     website: 'Website',
     socialLinks: 'Social Media',
-    socialLinksHint: 'Links zu Instagram, Facebook, WhatsApp-Kanal und Co. Bis zu 6.',
+    socialLinksHint: (max) =>
+      `Instagram, Facebook, WhatsApp-Kanal, Spotify und Co. Bis zu ${max}. Du kannst auch mehrere Links auf einmal einfügen.`,
     socialLink: 'Social-Media-Link',
     addSocialLink: 'Weiteren Link hinzufügen',
     removeSocialLink: 'Link entfernen',
@@ -353,7 +354,8 @@ const en: DashboardMessages = {
     phone: 'Phone',
     website: 'Website',
     socialLinks: 'Social media',
-    socialLinksHint: 'Links to Instagram, Facebook, a WhatsApp channel and so on. Up to 6.',
+    socialLinksHint: (max) =>
+      `Instagram, Facebook, a WhatsApp channel, Spotify and so on. Up to ${max}. You can paste several links at once.`,
     socialLink: 'Social media link',
     addSocialLink: 'Add another link',
     removeSocialLink: 'Remove link',
@@ -500,7 +502,8 @@ const fr: DashboardMessages = {
     phone: 'Téléphone',
     website: 'Site web',
     socialLinks: 'Réseaux sociaux',
-    socialLinksHint: 'Liens vers Instagram, Facebook, une chaîne WhatsApp, etc. Jusqu’à 6.',
+    socialLinksHint: (max) =>
+      `Instagram, Facebook, une chaîne WhatsApp, Spotify, etc. Jusqu’à ${max}. Vous pouvez coller plusieurs liens d’un coup.`,
     socialLink: 'Lien réseau social',
     addSocialLink: 'Ajouter un lien',
     removeSocialLink: 'Retirer le lien',
