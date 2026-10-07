@@ -1,3 +1,10 @@
+const ORGANIZER_SLUG = /^[a-z0-9-]{1,64}$/;
+
+/** Guards untrusted input (URL params) before it reaches a query. */
+export function isOrganizerSlug(value: string): boolean {
+  return ORGANIZER_SLUG.test(value);
+}
+
 /** "Tangofreunde Saarbrücken e.V." -> "tangofreunde-saarbruecken-e-v" */
 export function slugify(value: string): string {
   const slug = value

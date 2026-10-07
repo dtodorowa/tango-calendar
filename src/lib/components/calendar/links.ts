@@ -4,6 +4,10 @@ export function eventHref(occurrence: Pick<Occurrence, 'eventId' | 'dateKey'>): 
   return `/events/${encodeURIComponent(occurrence.eventId)}?date=${occurrence.dateKey}`;
 }
 
+export function organizerHref(slug: string): string {
+  return `/organizers/${encodeURIComponent(slug)}`;
+}
+
 /** "https://www.example.org/path" -> "example.org/path" for display. */
 export function websiteLabel(url: string): string {
   return url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');

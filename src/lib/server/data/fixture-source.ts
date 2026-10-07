@@ -38,5 +38,8 @@ export const fixtureSource: EventSource = {
   },
   async listOrganizations() {
     return [...organizations].sort((a, b) => a.name.localeCompare(b.name));
+  },
+  async getOrganization(slug) {
+    return organizations.find((o) => o.slug === slug);
   }
 };

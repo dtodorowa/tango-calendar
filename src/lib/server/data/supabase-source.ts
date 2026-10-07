@@ -5,6 +5,8 @@ import type { AppSupabaseClient } from '$lib/server/supabase';
 import { EVENT_SELECT, toOrganization, toSeriesWithContext, type EventRow } from './rows';
 import type { EventSource, SeriesWithContext } from './source';
 
+const ORGANIZATION_COLUMNS = 'id, name, slug, email, phone, website, social_links, logo';
+
 function mapRows(rows: EventRow[]): SeriesWithContext[] {
   return rows
     .map((row) => toSeriesWithContext(row, supabaseUrl))
@@ -44,10 +46,20 @@ export function supabaseSource(client: AppSupabaseClient): EventSource {
     async listOrganizations() {
       const { data, error } = await client
         .from('organizations')
-        .select('id, name, slug, email, phone, website, social_links, logo')
+        .select(ORGANIZATION_COLUMNS)
         .order('name');
       if (error) throw error;
       return data.map((row) => toOrganization(row, supabaseUrl));
+    },
+
+    async getOrganization(slug) {
+      const { data, error } = await client
+        .from('organizations')
+        .select(ORGANIZATION_COLUMNS)
+        .eq('slug', slug)
+        .maybeSingle();
+      if (error) throw error;
+      return data ? toOrganization(data, supabaseUrl) : undefined;
     }
   };
 }

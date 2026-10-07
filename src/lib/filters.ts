@@ -2,6 +2,7 @@
 // view is shareable and server-renders correctly; this module parses them from
 // URLSearchParams, writes them back, and applies them to occurrences.
 
+import { isOrganizerSlug } from './slug';
 import { CATEGORIES, TAGS, type Category, type Locale, type Occurrence, type Tag } from './types';
 
 /** Slider ceiling. A max at the ceiling means "no upper limit" (shown as "20 €+"). */
@@ -41,14 +42,12 @@ function parsePrice(raw: string | null): { priceMin: number; priceMax: number } 
   return { priceMin: Math.min(low, high), priceMax: Math.max(low, high) };
 }
 
-const ORGANIZER_SLUG = /^[a-z0-9-]{1,64}$/;
-
 export function parseFilters(params: URLSearchParams): Filters {
   const organizer = params.get('org');
   return {
     query: (params.get('q') ?? '').slice(0, 100),
     categories: parseList(params.get('cat'), CATEGORIES),
-    organizer: organizer && ORGANIZER_SLUG.test(organizer) ? organizer : null,
+    organizer: organizer && isOrganizerSlug(organizer) ? organizer : null,
     ...parsePrice(params.get('price')),
     tags: parseList(params.get('tags'), TAGS)
   };

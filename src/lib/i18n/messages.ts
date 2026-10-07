@@ -38,6 +38,9 @@ export interface Messages {
   backToCalendar: string;
   upcomingDates: string;
   noUpcomingDates: string;
+  upcomingEvents: string;
+  noUpcomingEvents: string;
+  organizerDescription: (name: string) => string;
   addToCalendar: string;
   subscribe: string;
   organizer: string;
@@ -104,6 +107,9 @@ const de: Messages = {
   backToCalendar: 'Zurück zum Kalender',
   upcomingDates: 'Nächste Termine',
   noUpcomingDates: 'Keine weiteren Termine in den nächsten Wochen.',
+  upcomingEvents: 'Kommende Events',
+  noUpcomingEvents: 'Gerade sind keine Events geplant. Schau bald wieder vorbei.',
+  organizerDescription: (name) => `Tango-Events von ${name}: Milongas, Kurse und mehr.`,
   addToCalendar: 'Zum Kalender hinzufügen',
   subscribe: 'Kalender abonnieren',
   organizer: 'Veranstalter',
@@ -170,6 +176,9 @@ const en: Messages = {
   backToCalendar: 'Back to calendar',
   upcomingDates: 'Upcoming dates',
   noUpcomingDates: 'No more dates in the coming weeks.',
+  upcomingEvents: 'Upcoming events',
+  noUpcomingEvents: 'Nothing scheduled right now. Check back soon.',
+  organizerDescription: (name) => `Tango events by ${name}: milongas, classes and more.`,
   addToCalendar: 'Add to calendar',
   subscribe: 'Subscribe to calendar',
   organizer: 'Organizer',
@@ -236,6 +245,9 @@ const fr: Messages = {
   backToCalendar: 'Retour au calendrier',
   upcomingDates: 'Prochaines dates',
   noUpcomingDates: 'Pas d’autres dates dans les semaines à venir.',
+  upcomingEvents: 'Événements à venir',
+  noUpcomingEvents: 'Rien de prévu pour le moment. Revenez bientôt.',
+  organizerDescription: (name) => `Événements de tango par ${name} : milongas, cours et plus.`,
   addToCalendar: 'Ajouter au calendrier',
   subscribe: 'S’abonner au calendrier',
   organizer: 'Organisateur',

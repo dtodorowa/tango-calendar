@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { slugify } from './slug';
+import { isOrganizerSlug, slugify } from './slug';
 
 describe('slugify', () => {
   it('handles German and French characters', () => {
@@ -10,5 +10,18 @@ describe('slugify', () => {
 
   it('never returns an empty slug', () => {
     expect(slugify('!!!')).toBe('organizer');
+  });
+});
+
+describe('isOrganizerSlug', () => {
+  it('accepts what slugify produces', () => {
+    expect(isOrganizerSlug(slugify('Tango Frontière'))).toBe(true);
+  });
+
+  it('rejects path tricks, capitals and empty input', () => {
+    expect(isOrganizerSlug('../x')).toBe(false);
+    expect(isOrganizerSlug('Tango')).toBe(false);
+    expect(isOrganizerSlug('')).toBe(false);
+    expect(isOrganizerSlug('a'.repeat(65))).toBe(false);
   });
 });

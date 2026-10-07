@@ -9,10 +9,14 @@
   import CategoryBadges from './CategoryBadges.svelte';
   import EventThumb from './EventThumb.svelte';
   import PriceTag from './PriceTag.svelte';
-  import { eventHref, websiteLabel } from './links';
+  import { eventHref, organizerHref, websiteLabel } from './links';
 
-  type Props = { occurrence: Occurrence };
-  let { occurrence }: Props = $props();
+  type Props = {
+    occurrence: Occurrence;
+    /** Off on an organizer's own page, where every row has the same organizer. */
+    showOrganizer?: boolean;
+  };
+  let { occurrence, showOrganizer = true }: Props = $props();
 
   const i18n = getI18n();
   const locale = $derived(i18n.locale);
@@ -20,7 +24,10 @@
 </script>
 
 <article
-  class="surface group relative flex gap-3 p-2.5 transition-shadow hover:shadow-md md:grid md:grid-cols-[4rem_9rem_minmax(0,1fr)_6rem] md:items-center md:gap-5 md:p-3 xl:grid-cols-[4rem_9rem_minmax(0,1fr)_15rem_6rem]"
+  class={[
+    'surface group relative flex gap-3 p-2.5 transition-shadow hover:shadow-md md:grid md:grid-cols-[4rem_9rem_minmax(0,1fr)_6rem] md:items-center md:gap-5 md:p-3',
+    showOrganizer && 'xl:grid-cols-[4rem_9rem_minmax(0,1fr)_15rem_6rem]'
+  ]}
 >
   <div class="hidden flex-col items-center text-center md:flex" aria-hidden="true">
     <span class="text-[0.6875rem] font-medium text-muted-foreground uppercase">
@@ -75,33 +82,42 @@
     </div>
   </div>
 
-  <dl class="relative z-10 hidden min-w-0 flex-col gap-0.5 text-sm xl:flex">
-    <dt class="sr-only">{i18n.t.organizer}</dt>
-    <dd class="truncate font-medium">{org.name}</dd>
-    {#if org.phone}
-      <dt class="sr-only">{i18n.t.contactPhone}</dt>
-      <dd class="flex items-center gap-1.5 truncate text-muted-foreground">
-        <Phone size={13} class="shrink-0" />
-        <a href="tel:{org.phone.replace(/\s/g, '')}" class="hover:text-foreground">{org.phone}</a>
+  {#if showOrganizer}
+    <dl class="relative z-10 hidden min-w-0 flex-col gap-0.5 text-sm xl:flex">
+      <dt class="sr-only">{i18n.t.organizer}</dt>
+      <dd class="truncate font-medium">
+        <a href={organizerHref(org.slug)} class="hover:text-primary">{org.name}</a>
       </dd>
-    {/if}
-    {#if org.email}
-      <dt class="sr-only">{i18n.t.contactEmail}</dt>
-      <dd class="flex items-center gap-1.5 truncate text-muted-foreground">
-        <Mail size={13} class="shrink-0" />
-        <a href="mailto:{org.email}" class="truncate hover:text-foreground">{org.email}</a>
-      </dd>
-    {/if}
-    {#if org.website}
-      <dt class="sr-only">{i18n.t.contactWebsite}</dt>
-      <dd class="flex items-center gap-1.5 truncate text-muted-foreground">
-        <Globe size={13} class="shrink-0" />
-        <a href={org.website} rel="noopener" target="_blank" class="truncate hover:text-foreground">
-          {websiteLabel(org.website)}
-        </a>
-      </dd>
-    {/if}
-  </dl>
+      {#if org.phone}
+        <dt class="sr-only">{i18n.t.contactPhone}</dt>
+        <dd class="flex items-center gap-1.5 truncate text-muted-foreground">
+          <Phone size={13} class="shrink-0" />
+          <a href="tel:{org.phone.replace(/\s/g, '')}" class="hover:text-foreground">{org.phone}</a>
+        </dd>
+      {/if}
+      {#if org.email}
+        <dt class="sr-only">{i18n.t.contactEmail}</dt>
+        <dd class="flex items-center gap-1.5 truncate text-muted-foreground">
+          <Mail size={13} class="shrink-0" />
+          <a href="mailto:{org.email}" class="truncate hover:text-foreground">{org.email}</a>
+        </dd>
+      {/if}
+      {#if org.website}
+        <dt class="sr-only">{i18n.t.contactWebsite}</dt>
+        <dd class="flex items-center gap-1.5 truncate text-muted-foreground">
+          <Globe size={13} class="shrink-0" />
+          <a
+            href={org.website}
+            rel="noopener"
+            target="_blank"
+            class="truncate hover:text-foreground"
+          >
+            {websiteLabel(org.website)}
+          </a>
+        </dd>
+      {/if}
+    </dl>
+  {/if}
 
   <PriceTag price={occurrence.price} class="hidden justify-self-end md:inline-flex" />
 </article>

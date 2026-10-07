@@ -2,19 +2,16 @@
   import ArrowLeft from '@lucide/svelte/icons/arrow-left';
   import CalendarPlus from '@lucide/svelte/icons/calendar-plus';
   import ExternalLink from '@lucide/svelte/icons/external-link';
-  import Globe from '@lucide/svelte/icons/globe';
-  import Mail from '@lucide/svelte/icons/mail';
   import MapPin from '@lucide/svelte/icons/map-pin';
-  import Phone from '@lucide/svelte/icons/phone';
   import { page } from '$app/state';
   import CategoryBadges from '$lib/components/calendar/CategoryBadges.svelte';
   import EventThumb from '$lib/components/calendar/EventThumb.svelte';
   import EventsMap from '$lib/components/calendar/EventsMap.svelte';
   import PriceTag from '$lib/components/calendar/PriceTag.svelte';
   import { primaryStyle } from '$lib/components/calendar/category-style';
-  import { eventHref, googleMapsHref, websiteLabel } from '$lib/components/calendar/links';
+  import { eventHref, googleMapsHref, organizerHref } from '$lib/components/calendar/links';
   import AppHeader from '$lib/components/layout/AppHeader.svelte';
-  import SocialLinks from '$lib/components/social/SocialLinks.svelte';
+  import OrganizerContact from '$lib/components/organizer/OrganizerContact.svelte';
   import { Button } from '$lib/components/ui/button';
   import { formatLongDate, formatShortDate, formatTimeRange } from '$lib/format';
   import { getI18n } from '$lib/i18n/context';
@@ -207,41 +204,16 @@
         <h2 class="text-xs font-semibold tracking-wide text-muted-foreground uppercase">
           {i18n.t.organizer}
         </h2>
-        <p class="flex items-center gap-2.5 font-medium">
+        <a
+          href={organizerHref(org.slug)}
+          class="flex items-center gap-2.5 font-medium hover:text-primary"
+        >
           {#if org.logo}
             <img src={org.logo} alt="" class="size-10 shrink-0 rounded-full border object-cover" />
           {/if}
           {org.name}
-        </p>
-        {#if org.phone}
-          <a
-            href="tel:{org.phone.replace(/\s/g, '')}"
-            class="flex items-center gap-2 hover:text-primary"
-          >
-            <Phone size={15} class="text-muted-foreground" />
-            {org.phone}
-          </a>
-        {/if}
-        {#if org.email}
-          <a href="mailto:{org.email}" class="flex items-center gap-2 break-all hover:text-primary">
-            <Mail size={15} class="shrink-0 text-muted-foreground" />
-            {org.email}
-          </a>
-        {/if}
-        {#if org.website}
-          <a
-            href={org.website}
-            target="_blank"
-            rel="noopener"
-            class="flex items-center gap-2 hover:text-primary"
-          >
-            <Globe size={15} class="text-muted-foreground" />
-            {websiteLabel(org.website)}
-          </a>
-        {/if}
-        {#if org.socialLinks?.length}
-          <SocialLinks links={org.socialLinks} class="pt-1" />
-        {/if}
+        </a>
+        <OrganizerContact organization={org} />
       </section>
 
       <Button

@@ -12,4 +12,5 @@ export interface EventSource {
   listPublishedSeries(orgSlug?: string): Promise<SeriesWithContext[]>;
   getPublishedSeries(id: string): Promise<SeriesWithContext | undefined>;
   listOrganizations(): Promise<Organization[]>;
+  getOrganization(slug: string): Promise<Organization | undefined>;
 }
